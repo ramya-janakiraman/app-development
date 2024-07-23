@@ -1,4 +1,5 @@
 import { useState } from "react";
+import '../assets/css/Register.css'; // Ensure you have the CSS file in the correct path
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -42,54 +43,71 @@ function Register() {
 
     setError(formErrors);
     console.log(formData);
+
+    if (Object.keys(formErrors).length === 0) {
+      window.location.href = "login.html"; // Redirect on successful validation
+    }
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        <label>Name</label>
-        <input
-          type="text"
-          placeholder="Enter Name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-        {error.name && <p style={{ color: "red" }}>{error.name}</p>}<br></br><br></br>
-        
-        <label>Email</label>
-        <input
-          type="email"
-          placeholder="Enter Email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-        />
-        {error.email && <p style={{ color: "red" }}>{error.email}</p>}<br></br><br></br>
-        
-        <label>Password</label>
-        <input
-          type="password"
-          placeholder="Enter Password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        {error.password && <p style={{ color: "red" }}>{error.password}</p>}<br></br><br></br>
-        
-        <label>Confirm Password</label>
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          name="confirmPassword"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-        />
-        {error.confirmPassword && <p style={{ color: "red" }}>{error.confirmPassword}</p>}<br></br><br></br>
-        
-        <button type="submit">Register</button>
-      </form>
+    <div className="bg-img">
+      <div className="content">
+        <header>Signup Now</header>
+        <form className="signup" onSubmit={handleSubmit}>
+          <div className="field">
+            <span className="fa fa-user"></span>
+            <input
+              type="text"
+              placeholder="User Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            {error.name && <p style={{ color: "red" }}>{error.name}</p>}
+          </div>
+          <div className="field space">
+            <span className="fa fa-envelope"></span>
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            {error.email && <p style={{ color: "red" }}>{error.email}</p>}
+          </div>
+          <div className="field space">
+            <span className="fa fa-lock"></span>
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            {error.password && <p style={{ color: "red" }}>{error.password}</p>}
+          </div>
+          <div className="field space">
+            <span className="fa fa-lock"></span>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+            {error.confirmPassword && <p style={{ color: "red" }}>{error.confirmPassword}</p>}
+          </div>
+          <br />
+          <div className="field">
+            <input type="submit" value="SIGNUP" />
+          </div>
+        </form><br></br>
+        <div className="signup">
+          Already have an account?
+          <a href="login.html">Login Now</a>
+        </div>
+      </div>
     </div>
   );
 }
