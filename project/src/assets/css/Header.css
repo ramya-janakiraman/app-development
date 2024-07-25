@@ -1,0 +1,78 @@
+/* Style for the header container */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    height: 130px;
+  }
+  
+  /* Style for the logo */
+  .header .logo img {
+    max-height: 70px;
+    width: auto;
+  }
+  
+  /* Container for navigation and search */
+  .header .nav-search-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Style for the navigation menu */
+  .header nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Style for the navigation items */
+  .header nav ul li {
+    margin: 0 15px;
+  }
+  
+  /* Style for the navigation links */
+  .header nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 16px;
+    font-weight:500;
+    transition: color 0.3s;
+    font-size: 17px;
+  }
+  
+  /* Hover effect for the navigation links */
+  .header nav ul li a:hover {
+    color:#F6BE00;
+  }
+  
+  /* Style for the search box */
+  .header .search-box {
+    margin-left: 180px;
+
+  }
+  
+  .header .search-box input {
+    padding: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    height: 40px;
+    width: 400px;
+  }
+  
+  .header .search-box button {
+    padding: 5px 10px;
+    font-size: 16px;
+    border: none;
+    background-color: #F6BE00;
+    color: black;
+    border-radius: 10px;
+    margin-left: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 40px;
+  }
+  
+  

@@ -1,27 +1,24 @@
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 .bg-img {
-  background-color: #008000;
-  height: 100vh;
-  background-size: cover;
-  background-position: center;
-  position: absolute;
-  height: 100%;
+  background-color:#F6BE00;
   width: 100%;
+  
+}
+.img{
+   top: 100px;
 }
 .content {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 20%;
+  left: 65%;
   text-align: center;
   padding: 60px 32px;
   width: 370px;
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow: -1px 4px 28px 0px rgba(0, 0, 0, 0.75);
 }
 .content header {
   color: white;
@@ -68,9 +65,8 @@
   text-decoration: underline;
 }
 .field input[type="submit"] {
-  background: #3498db;
-  border: 1px solid #2691d9;
-  color: white;
+  background: #2f1b12;
+  color: #F6BE00;
   font-size: 18px;
   letter-spacing: 1px;
   font-weight: 600;
@@ -78,7 +74,7 @@
   font-family: 'Montserrat', sans-serif;
 }
 .field input[type="submit"]:hover {
-  background: #2691d9;
+  background: #2f1b12;
 }
 .signup {
   font-size: 15px;
@@ -86,7 +82,7 @@
   font-family: 'Poppins', sans-serif;
 }
 .signup a {
-  color: #26d3d9;
+  color: #2f1b12;
   text-decoration: none;
 }
 .signup a:hover {

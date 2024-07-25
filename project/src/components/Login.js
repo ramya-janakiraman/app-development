@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import '../assets/css/Login.css';
+import Header from "./Header";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -32,7 +33,11 @@ function Login() {
   };
 
   return (
+    
     <div className="bg-img">
+      <Header/>
+      <img src="https://toyzone.in/cdn/shop/t/6/assets/login-image.png?v=169142696570253652631663858988" className="log-img"></img>
+
       <div className="content">
         <header>Login Now</header>
         <form onSubmit={handleSubmit}>
@@ -71,6 +76,7 @@ function Login() {
         </div>
       </div>
     </div>
+    
   );
 }
 
