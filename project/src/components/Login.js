@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import '../assets/css/Login.css';
 import Header from "./Header";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ function Login() {
   return (
     
     <div className="bg-img">
-      <Header/>
+      
       <img src="https://toyzone.in/cdn/shop/t/6/assets/login-image.png?v=169142696570253652631663858988" className="log-img"></img>
 
       <div className="content">
@@ -72,7 +73,7 @@ function Login() {
         </form><br></br>
         <div className="signup">
           Don't have an account?
-          <a href="signup.html">Signup Now</a>
+          <Link to="/signup">Signup Now</Link>
         </div>
       </div>
     </div>

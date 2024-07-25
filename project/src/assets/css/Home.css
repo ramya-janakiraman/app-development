@@ -1,43 +1,7 @@
-.home-container {
-  background-color: #F6BE00;
-  padding-bottom: 5px;
-  position: relative;
-}
-
-.home-container h3 {
-  text-align: left;
-  position: relative;
-  top: 10px; 
-  left: 60px;
-  font-family: serif;
-  font-weight: 900;
-  font-size: 20px !important; 
-}
-
-.home-container h4 {
-  font-family: sans-serif;
-  text-align: center;
-  position: relative;
-  font-size: 20px !important; /* Adjust size as needed */
-  left: 100px;
-}
-
-.logo{
-    text-align: left;
-    position: relative;
-    left: 70px;
-    top: 1px;
-}
-.logo img{
-    height: auto;
-    width: 350px;
-}
-.header{
-  padding: 35px;
-}
 
 .new-arrival{
   text-align: center;
+  margin-top: 20px;
 }
 
 .product{
@@ -118,8 +82,7 @@
   border-radius: 20px; /* Apply border-radius */
   overflow: hidden; /* Ensure border-radius is visible */
   margin: 30px;
-  margin-top: 120px;
-
+ 
 }
 
 /* Style for the images */
@@ -166,13 +129,14 @@
 .info-button:hover {
   color: #fff;
 }
-.shop-age{
-  background-image: url('https://img.freepik.com/free-vector/gray-curve-frame-template-vector_53876-154036.jpg?size=626&ext=jpg');
-  background-size: cover;
-  width: 100%;
-  height: 50%;
-}
+
 .card-container {
-  margin-top: 70px;
   margin-bottom: 50px; /* Adjust the spacing as needed */
 }
+.shop-age{
+    background-image: url('https://img.freepik.com/free-vector/gray-curve-frame-template-vector_53876-154036.jpg?size=626&ext=jpg');
+    background-size: cover;
+    width: 100%;
+    height: 700px;
+}
+    

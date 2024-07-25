@@ -15,14 +15,7 @@ const Home = () => {
 
   return (
     <div>
-      <div className='home-container'>
-        <i className="fa-solid fa-envelope"></i>
-        <h3>support@toyzone.in</h3>
-        <h4>100% Replacement Available T&C Applied</h4>
-      </div>
-      <header className='header'>
-        <Header />
-      </header>
+      
       <Carousel>
         <Carousel.Item>
           <img className="d-block w-100" src="https://toyzone.in/cdn/shop/files/99-store_0ac2798c-09fa-4c4e-99f1-7241d0ded53d.jpg?v=1672121636" alt="Toys" width="1000" height="600" />
@@ -227,8 +220,10 @@ const Home = () => {
                     </center>
 
                     <div style={{backgroundColor:'#FAE6E7'}}>
+                        <div className='sh' style={{padding:'20px'}}>
                     <h5 className='new-arrival'>Shop By Categories</h5>
                     <h1 className='product'>Toys For Kids</h1>
+                    </div>
                     <div class="image-list-container">
     <div class="image-list-item">
       <img
@@ -312,8 +307,10 @@ const Home = () => {
     </div>
     </div>
     <div className='shop-age'>
-    <h5 className='new-arrival' style={{marginTop:'60px'}}>products</h5>
+    <div className='sa' style={{padding:'20px'}}>
+    <h5 className='new-arrival'>products</h5>
     <h1 className='product'>Shop By Age</h1>
+    </div>
     <Box display="flex" justifyContent="center" gap={2} className="card-container">
       <Card sx={{ maxWidth: 345 }}>
         <CardActionArea>

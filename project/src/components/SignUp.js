@@ -1,7 +1,9 @@
 import { useState } from "react";
-import '../assets/css/Register.css'; // Ensure you have the CSS file in the correct path
+import '../assets/css/SignUp.css'; // Ensure you have the CSS file in the correct path
+import Header from "./Header";
+import { Link } from "react-router-dom";
 
-function Register() {
+function SignUp() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,6 +53,8 @@ function Register() {
 
   return (
     <div className="bg-img">
+       
+        <img src="https://toyzone.in/cdn/shop/t/6/assets/login-image.png?v=169142696570253652631663858988" className="log-img"></img>
       <div className="content">
         <header>Signup Now</header>
         <form className="signup" onSubmit={handleSubmit}>
@@ -105,11 +109,11 @@ function Register() {
         </form><br></br>
         <div className="signup">
           Already have an account?
-          <a href="login.html">Login Now</a>
+          <Link to="/login">Login Now</Link>
         </div>
       </div>
     </div>
   );
 }
 
-export default Register;
+export default SignUp;
