@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import '../assets/css/Login.css';
-import Header from "./Header";
 import { Link } from "react-router-dom";
 
 function Login() {
@@ -13,6 +13,8 @@ function Login() {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -29,16 +31,19 @@ function Login() {
     if (formData.password.trim() === "") {
       formErrors.password = "Enter Password";
     }
-    setError(formErrors);
-    console.log(formData);
+    if (Object.keys(formErrors).length > 0) {
+      setError(formErrors);
+    } else {
+      // Proceed with login logic
+      console.log(formData);
+      // Redirect to the category page after successful login
+      navigate('/category'); // Change '/category' to the desired path
+    }
   };
 
   return (
-    
     <div className="bg-img">
-      
-      <img src="https://toyzone.in/cdn/shop/t/6/assets/login-image.png?v=169142696570253652631663858988" className="log-img"></img>
-
+      <img src="https://toyzone.in/cdn/shop/t/6/assets/login-image.png?v=169142696570253652631663858988" className="log-img" alt="Login" />
       <div className="content">
         <header>Login Now</header>
         <form onSubmit={handleSubmit}>
@@ -70,14 +75,14 @@ function Login() {
           <div className="field">
             <input type="submit" value="LOGIN" />
           </div>
-        </form><br></br>
+        </form>
+        <br />
         <div className="signup">
           Don't have an account?
           <Link to="/signup">Signup Now</Link>
         </div>
       </div>
     </div>
-    
   );
 }
 

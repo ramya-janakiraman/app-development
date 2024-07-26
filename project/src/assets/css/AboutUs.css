@@ -1,0 +1,68 @@
+.about-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.about-header h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #2f1b12; /* Yellow color for the header */
+}
+
+.about-content {
+  background-color: #fff7cc; /* Light yellow background color */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.about-section img {
+  max-width: 150px;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-text h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #F6BE00; /* Yellow color for subheaders */
+}
+
+.about-text p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333; /* Dark color for text */
+}
+
+.thank-you-message button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #ffcc00; /* Yellow color for OK button */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.thank-you-message button:hover {
+  background-color: #e6b800; /* Darker yellow on hover */
+}

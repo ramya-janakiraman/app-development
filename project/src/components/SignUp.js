@@ -1,7 +1,5 @@
 import { useState } from "react";
-import '../assets/css/SignUp.css'; // Ensure you have the CSS file in the correct path
-import Header from "./Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -17,6 +15,8 @@ function SignUp() {
     password: "",
     confirmPassword: ""
   });
+
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -44,17 +44,15 @@ function SignUp() {
     }
 
     setError(formErrors);
-    console.log(formData);
-
     if (Object.keys(formErrors).length === 0) {
-      window.location.href = "login.html"; // Redirect on successful validation
+      // Assuming successful signup
+      navigate('/login'); // Redirect to login page
     }
   };
 
   return (
     <div className="bg-img">
-       
-        <img src="https://toyzone.in/cdn/shop/t/6/assets/login-image.png?v=169142696570253652631663858988" className="log-img"></img>
+      <img src="https://toyzone.in/cdn/shop/t/6/assets/login-image.png?v=169142696570253652631663858988" className="log-img" alt="Sign Up" />
       <div className="content">
         <header>Signup Now</header>
         <form className="signup" onSubmit={handleSubmit}>
@@ -106,7 +104,8 @@ function SignUp() {
           <div className="field">
             <input type="submit" value="SIGNUP" />
           </div>
-        </form><br></br>
+        </form>
+        <br />
         <div className="signup">
           Already have an account?
           <Link to="/login">Login Now</Link>

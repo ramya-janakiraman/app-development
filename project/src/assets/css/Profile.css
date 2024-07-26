@@ -1,0 +1,106 @@
+/* Profile.css */
+
+/* Profile page container */
+.profile-page {
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Centering the content and adding spacing */
+  .profile-page h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Profile details section */
+  .profile-details {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff7cc;
+    margin-bottom: 20px;
+  }
+  
+  .profile-details h2 {
+    font-size: 2rem;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  
+  .profile-details p {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  /* Profile form styling */
+  .profile-form {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff7cc;
+  }
+  
+  .profile-form label {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .profile-form input,
+  .profile-form textarea {
+    width: calc(100% - 20px);
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .profile-form input[type="text"],
+  .profile-form input[type="email"] {
+    font-size: 1rem;
+  }
+  
+  .profile-form textarea {
+    font-size: 1rem;
+    height: 100px;
+  }
+  
+  /* Button styling */
+  .profile-form button,
+  .profile-page button {
+    background-color: #F6BE00;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-right: 10px; /* Add space between buttons */
+  }
+  
+  .profile-form button:hover,
+  .profile-page button:hover {
+    background-color: #e6b800;
+  }
+  
+  .profile-form .cancel-button {
+    background-color: #F6BE00;
+  }
+  
+  .profile-form .cancel-button:hover {
+    background-color: #e6b800;
+  }
+  
+  /* Add a wrapper around the buttons to handle spacing */
+  .button-wrapper {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 10px; /* Space between buttons */
+  }
+  

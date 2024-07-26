@@ -1,105 +1,140 @@
-/* Style for the header container */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
 .home-container {
   background-color: #F6BE00;
   position: relative;
   height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribute space between items */
+  padding: 0 20px; /* Add some padding for spacing */
+}
+
+.home-container .left-content {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between icon and text */
+}
+
+.home-container i {
+  font-size: 1.5rem; 
 }
 
 .home-container h3 {
-  text-align: left;
-  position: relative;
-  top: 14px; 
-  left: 60px;
   font-family: serif;
   font-weight: 900;
   font-size: 20px !important; 
+  margin: 0; /* Remove default margin */
 }
 
 .home-container h4 {
   font-family: sans-serif;
-  text-align: center;
-  position: relative;
   font-size: 20px !important; /* Adjust size as needed */
-  left: 40px;
-  bottom: 13px;
+  margin: 0; /* Remove default margin */
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f8f9fa;
-    height: 130px;
-  }
-  
-  /* Style for the logo */
-  .header .logo img {
-    max-height: 70px;
-    width: auto;
-  }
-  
-  /* Container for navigation and search */
-  .header .nav-search-container {
-    display: flex;
-    align-items: center;
-    margin-right: 100px;
-  }
-  
-  /* Style for the navigation menu */
-  .header nav ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* Style for the navigation items */
-  .header nav ul li {
-    margin: 0 15px;
-  }
-  
-  /* Style for the navigation links */
-  .header nav ul li a {
-    text-decoration: none;
-    color: black;
-    font-size: 16px;
-    font-weight:500;
-    transition: color 0.3s;
-    font-size: 17px;
-  }
-  
-  /* Hover effect for the navigation links */
-  .header nav ul li a:hover {
-    color:#F6BE00;
-  }
-  
-  /* Style for the search box */
-  .header .search-box {
-    margin-left: 180px;
+.social-icons {
+  display: flex;
+  gap: 10px; /* Space between each icon */
+}
 
-  }
-  
-  .header .search-box input {
-    padding: 5px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    height: 40px;
-    width: 400px;
-    
-  }
-  
-  .header .search-box button {
-    padding: 5px 10px;
-    font-size: 16px;
-    border: none;
-    background-color: #F6BE00;
-    color: black;
-    border-radius: 10px;
-    margin-left: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    height: 40px;
-  }
-  
-  
+.social-icons a {
+  color: black; /* Default color of the icons */
+  font-size: 1.5rem; /* Adjust icon size */
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: white; /* Color of the icons on hover */
+}
+
+/* Rest of your CSS */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  height: 130px;
+  padding: 0 20px;
+}
+
+/* Style for the logo */
+.header .logo img {
+  max-height: 70px;
+  width: auto;
+}
+
+/* Style for the navigation menu */
+.header nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header nav ul li {
+  margin: 0 15px;
+}
+
+.header nav ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+  font-weight: 500;
+  transition: color 0.3s;
+  font-size: 17px;
+}
+
+.header nav ul li a:hover {
+  color: #F6BE00;
+}
+
+/* Style for the search box and icons */
+.header .search-box {
+  display: flex;
+  align-items: center;
+  margin-left: 80px; /* Push search box to the right */
+}
+
+.header .search-box input {
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  height: 40px;
+  width: 400px;
+}
+
+.header .search-box button {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: none;
+  background-color: #F6BE00;
+  color: black;
+  border-radius: 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: 40px;
+}
+
+.header .search-box .icons {
+  display: flex;
+  gap: 15px; /* Space between icons */
+  margin-left: 15px; /* Add space between button and icons */
+}
+
+.header .search-box .icons i {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.header .search-box .icons i:hover {
+  color: #F6BE00; /* Change color on hover */
+}
+/* Add this CSS to your Header.css file */
+
+
+

@@ -1,0 +1,84 @@
+.contact-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff7cc; /* Light yellow background color */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .contact-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .contact-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2f1b12; /* Yellow color for the header */
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #F6BE00; /* Yellow color for labels */
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .form-group textarea {
+    resize: vertical;
+    height: 100px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: black;
+    background-color: #F6BE00; /* Yellow color for button */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #e6b800; /* Darker yellow on hover */
+  }
+  
+  .thank-you-message {
+    text-align: center;
+    color: #333;
+  }
+  
+  .thank-you-message h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #F6BE00; /* Yellow color for thank you message header */
+  }
+  
+  .thank-you-message p {
+    font-size: 16px;
+    color: #333;
+  }
+  
