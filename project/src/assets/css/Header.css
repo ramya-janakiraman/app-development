@@ -1,3 +1,4 @@
+/* Existing CSS */
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 
 .home-container {
@@ -134,7 +135,31 @@
 .header .search-box .icons i:hover {
   color: #F6BE00; /* Change color on hover */
 }
+
+/* Additional CSS for add-to-cart icon */
+.header .search-box .icons .add-to-cart-icon {
+  color: black; /* Set the default color to black */
+}
+.header .search-box .icons .wishlist-icon {
+  color: black; /* Set the default color to black */
+}
+
 /* Add this CSS to your Header.css file */
+.search-results {
+  padding: 10px;
+  background-color: #f8f9fa;
+  margin: 20px;
+  border-radius: 10px;
+}
 
+.search-results ul {
+  list-style-type: none;
+  padding: 0;
+}
 
-
+.search-results li {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #f6be00;
+  border-radius: 10px;
+}

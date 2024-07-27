@@ -36,6 +36,8 @@ function Login() {
     } else {
       // Proceed with login logic
       console.log(formData);
+      // Show success alert
+      alert('Login successful!');
       // Redirect to the category page after successful login
       navigate('/category'); // Change '/category' to the desired path
     }

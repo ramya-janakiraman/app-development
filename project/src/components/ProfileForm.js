@@ -3,62 +3,55 @@ import React, { useState } from 'react';
 const ProfileForm = ({ userData, onSave, onCancel }) => {
   const [formData, setFormData] = useState(userData);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     onSave(formData);
   };
 
   return (
     <form onSubmit={handleSubmit} className="profile-form">
-      <label>
-        Name:
+      <div className="form-group">
+        <label>Name:</label>
         <input 
           type="text" 
           name="name" 
           value={formData.name} 
           onChange={handleChange} 
         />
-      </label>
-      <label>
-        Email:
+      </div>
+      <div className="form-group">
+        <label>Email:</label>
         <input 
           type="email" 
           name="email" 
           value={formData.email} 
           onChange={handleChange} 
         />
-      </label>
-      <label>
-        Mobile Number:
+      </div>
+      <div className="form-group">
+        <label>Mobile:</label>
         <input 
-          type="tel" 
+          type="text" 
           name="mobile" 
           value={formData.mobile} 
           onChange={handleChange} 
-          pattern="[0-9]{10}" 
-          placeholder="1234567890" 
         />
-      </label>
-      <label>
-        Address:
+      </div>
+      <div className="form-group">
+        <label>Address:</label>
         <textarea 
-          name="bio" 
+          name="address" 
           value={formData.address} 
           onChange={handleChange} 
         />
-      </label>
-      <div className="button-wrapper">
-        <button type="submit">Save</button>
-        <button type="button" className="cancel-button" onClick={onCancel}>Cancel</button>
       </div>
+      <button type="submit">Save</button>
+      <button type="button" onClick={onCancel}>Cancel</button>
     </form>
   );
 };

@@ -1,0 +1,14 @@
+.order-history-container {
+    padding: 20px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .order-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    
+  }
+  

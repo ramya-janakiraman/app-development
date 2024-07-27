@@ -12,6 +12,12 @@ import NewArrival from './components/NewArrival';
 import Profile from './components/Profile';
 import Home from './components/Home';
 import Footer from './components/Footer';
+import Wish from './components/Wish';
+import AddToCartPage from './components/AddToCartPage';
+import Order from './components/Order';
+
+
+
 
 
 
@@ -29,7 +35,9 @@ function App() {
           <Route path="/category" element={<Category/>}/>
           <Route path='/newarrival' element={<NewArrival/>}/>
           <Route path='/profile' element={<Profile/>}/>
-
+          <Route path='/wish' element={<Wish/>}/>
+          <Route path='/cart' element={<AddToCartPage/>}/>
+          <Route path='/order' element={<Order/>}/>
         </Routes>
         <Footer/>
       </Router>

@@ -19,7 +19,7 @@ const Profile = () => {
       name: 'Ramya J',
       email: 'ramya@example.com',
       mobile: '1234567890', // Example mobile number
-      address: '3/912,police line street,R K PET,631303'
+      address: '3/912, Police Line Street, R K Pet, 631303'
     };
     setUserData(fetchedData);
   }, []);

@@ -23,11 +23,11 @@ export default function Category() {
           <NavLink to="/category" className="nav-link" activeClassName="active-nav-link">
             All Categories
           </NavLink>
-          <NavLink to="/newarrival" className="nav-link" activeClassName="active-nav-link">
-            Category 2
-          </NavLink>
           <NavLink to="/category3" className="nav-link" activeClassName="active-nav-link">
             Category 3
+          </NavLink>
+          <NavLink to="/newarrival" className="nav-link" activeClassName="active-nav-link">
+            New Arrivals
           </NavLink>
         </nav>
       </Toolbar>

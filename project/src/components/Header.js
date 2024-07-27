@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../assets/css/Header.css';
 import AppBar from '@mui/material/AppBar';
@@ -8,9 +8,15 @@ import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
 
-const Header = ({ cartItemCount }) => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const Header = ({ cartItemCount, search, setSearch }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
 
   const handleMenu = (event) => {
@@ -26,12 +32,31 @@ const Header = ({ cartItemCount }) => {
     handleClose();
   };
 
-  const handleLogout = () => {
+  const handleWishListClick = () => {
+    navigate('/wish');
+    handleClose();
+  };
+  const handleOrderClick = () => {
+    navigate('/order');
+    handleClose();
+  };
+
+  const handleLogoutDialogOpen = () => {
+    setOpenDialog(true);
+    handleClose();
+  };
+
+  const handleLogoutConfirm = () => {
     // Clear user authentication data
     // Example: localStorage.removeItem('authToken');
     // Redirect to login or home page
     navigate('/login');  // Assuming you redirect to login page after logout
-    handleClose();
+    setOpenDialog(false);
+  };
+
+  const handleLogoutCancel = () => {
+    navigate('/');  // Redirect to the home page
+    setOpenDialog(false);
   };
 
   return (
@@ -70,14 +95,21 @@ const Header = ({ cartItemCount }) => {
           </ul>
         </nav>
         <div className="search-box">
-          <input type="text" placeholder="Search..." />
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
           <button type="submit">Search</button>
           <div className="icons">
-          <Link to="/cart">
-            <i className="fas fa-shopping-cart"></i>
-            <span>{cartItemCount}</span>
+            <Link to="/cart">
+              <i className="fas fa-shopping-cart add-to-cart-icon"></i>
+              <span>{cartItemCount}</span>
             </Link>
-            <i className="fas fa-heart"></i>
+            <Link to="/wish">
+              <i className="fas fa-heart wishlist-icon"></i>
+            </Link>
           </div>
         </div>
         <Box sx={{ flexGrow: 1 }}>
@@ -90,7 +122,7 @@ const Header = ({ cartItemCount }) => {
                 aria-haspopup="true"
                 onClick={handleMenu}
                 className="profile-icon"
-                sx={{color:'black'}}
+                sx={{ color: 'black' }}
               >
                 <AccountCircle />
               </IconButton>
@@ -109,13 +141,35 @@ const Header = ({ cartItemCount }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-                <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
+                <MenuItem onClick={handleLogoutDialogOpen}>Log Out</MenuItem>
+                <MenuItem onClick={handleWishListClick}>WishList</MenuItem>
+                <MenuItem onClick={handleOrderClick}>Your Orders</MenuItem>
               </Menu>
             </Toolbar>
           </AppBar>
         </Box>
       </header>
+
+      {/* Logout Confirmation Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={handleLogoutCancel}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to log out?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleLogoutCancel} color="primary">
+            No
+          </Button>
+          <Button onClick={handleLogoutConfirm} color="primary" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

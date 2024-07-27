@@ -1,12 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/css/Home.css';
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, Rating, Typography } from "@mui/material";
-import Header from './Header';
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, IconButton, Rating, Typography } from "@mui/material";
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import Footer from './Footer';
+import { Favorite } from '@mui/icons-material';
 
 const Home = () => {
   const [flag, setFlag] = React.useState(true);
@@ -14,6 +13,12 @@ const Home = () => {
     setFlag(!flag);
   };
 
+  const [favorites, setFavorites] = useState(Array(5).fill(false));
+
+  // Handle click for favorite icon
+  const handleFavoriteClick = (index) => {
+    setFavorites(favorites.map((fav, i) => (i === index ? !fav : fav)));
+  };
   return (
     <div>
       
@@ -33,178 +38,164 @@ const Home = () => {
       </Carousel>
 <br></br>
       <div>
-        <h5 className='new-arrival'>New Arrivals</h5>
-        <h1 className='product'>Products</h1>
-        <Box className="container-box">
-          <Grid container spacing={2} className="grid-container">
-            <Grid item className="grid-item">
-              <Card className="card-custom">
-                <CardActionArea>
-                  <Button sx={{ backgroundColor: '#F6BE00', fontWeight: 'bold', color: 'black', right: '30px', padding: '10px', fontFamily: 'sans-serif', fontSize: 'medium', marginLeft: '30px' }}>40% off</Button>
-                  <CardMedia className="card-media-custom" image="https://toyzone.in/cdn/shop/products/976458.jpg?v=1668512269" title="green iguana" />
-                  <CardContent className="card-content-custom">
-                    <Typography gutterBottom variant="h5">
-                      Super Premium Magic Car - Pink
-                    </Typography>
-                    <Typography variant="body2" className="price">
-                      Rs.1499.00
-                    </Typography>
-                    <Typography variant="body2" className="old-price">
-                      Rs.1499.00
-                    </Typography>
-                    <Button variant="contained" onClick={handleClick}
-                      color={flag ? "primary" : "secondary"} sx={{
-                        backgroundColor: 'white', color: 'black', padding: '10px', letterSpacing: '3px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', border: '2px solid', borderColor: 'black', fontWeight: 'bold', '&:hover': {
-                          backgroundColor: 'black', // Background color on hover
-                          color: 'white', // Font color on hover
+      <div className='new'>
+  <h5 className='new-arrival'>New Arrivals</h5>
+  <h1 className='product'>Products</h1>
+</div>
+<div className='na'>
+  <Box
+    sx={{
+      backgroundSize: 'cover',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <br />
+    <Grid container spacing={2} sx={{ padding: '50px' }}>
+      {[1, 2, 3, 4, 5].map((_, index) => (
+        <Grid item xs={2.4} key={index}> {/* Adjusted size for more cards in a row */}
+          <Card sx={{ maxWidth: 300 }}> {/* Adjusted width for smaller cards */}
+            <CardActionArea sx={{ '&:hover': { backgroundColor: 'transparent' } }}>
+            <IconButton
+                      sx={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        borderColor: '#F6BE00',
+                        color: favorites[index] ? '#F6BE00' : 'grey',
+                        '&:hover': {
+                          color: '#F6BE00', // Change color on hover
                         },
-                        '&:active': {
-                          backgroundColor: 'gray', // Background color on click
-                          color: 'white', // Font color on click
-                        },
-                      }}>
-                      ADD TO CART
-                    </Button><br></br>
-                    <Rating name="half-rating-read" defaultValue={2.5} precision={4.5} readOnly />
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item className="grid-item">
-              <Card className="card-custom">
-                <CardActionArea>
-                  <Button sx={{ backgroundColor: '#F6BE00', fontWeight: 'bold', color: 'black', right: '30px', padding: '10px', fontFamily: 'sans-serif', fontSize: 'medium', marginLeft: '30px' }}>50% off</Button>
-                  <CardMedia className="card-media-custom" image="https://toyzone.in/cdn/shop/products/54269.jpg?v=1668514009" title="green iguana" />
-                  <CardContent className="card-content-custom">
-                    <Typography gutterBottom variant="h5">
-                      Vegga RC Car - Red
-                    </Typography>
-                    <Typography variant="body2" className="price">
-                      Rs.799.00
-                    </Typography>
-                    <Typography variant="body2" className="old-price">
-                      Rs.1599.00
-                    </Typography>
-                    <Button variant="contained" onClick={handleClick}
-                      color={flag ? "primary" : "secondary"} sx={{
-                        backgroundColor: 'white', color: 'black', padding: '10px', letterSpacing: '3px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', border: '2px solid', borderColor: 'black', fontWeight: 'bold', '&:hover': {
-                          backgroundColor: 'black', // Background color on hover
-                          color: 'white', // Font color on hover
-                        },
-                        '&:active': {
-                          backgroundColor: 'gray', // Background color on click
-                          color: 'white', // Font color on click
-                        },
-                      }}>
-                      ADD TO CART
-                    </Button><br></br>
-                    <Rating name="half-rating-read" defaultValue={2.5} precision={4.5} readOnly />
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item className="grid-item">
-              <Card className="card-custom">
-                <CardActionArea>
-                  <Button sx={{ backgroundColor: '#F6BE00', fontWeight: 'bold', color: 'black', right: '30px', padding: '10px', fontFamily: 'sans-serif', fontSize: 'medium', marginLeft: '30px' }}>50% off</Button>
-                  <CardMedia className="card-media-custom" image="https://toyzone.in/cdn/shop/products/723934.jpg?v=1668491719" title="green iguana" />
-                  <CardContent className="card-content-custom">
-                    <Typography gutterBottom variant="h5">
-                      Varuna Missile Launcher Truck
-                    </Typography>
-                    <Typography variant="body2" className="price">
-                      Rs.149.00
-                    </Typography>
-                    <Typography variant="body2" className="old-price">
-                      Rs.299.00
-                    </Typography>
-                    <Button variant="contained" onClick={handleClick}
-                      color={flag ? "primary" : "secondary"} sx={{
-                        backgroundColor: 'white', color: 'black', padding: '10px', letterSpacing: '3px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', border: '2px solid', borderColor: 'black', fontWeight: 'bold', '&:hover': {
-                          backgroundColor: 'black', // Background color on hover
-                          color: 'white', // Font color on hover
-                        },
-                        '&:active': {
-                          backgroundColor: 'gray', // Background color on click
-                          color: 'white', // Font color on click
-                        },
-                      }}>
-                      ADD TO CART
-                    </Button><br></br>
-                    <Rating name="half-rating-read" defaultValue={2.5} precision={4.5} readOnly />
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item className="grid-item">
-              <Card className="card-custom">
-                <CardActionArea>
-                  <Button sx={{ backgroundColor: '#F6BE00', fontWeight: 'bold', color: 'black', right: '30px', padding: '10px', fontFamily: 'sans-serif', fontSize: 'medium', marginLeft: '30px' }}>33% off</Button>
-                  <CardMedia className="card-media-custom" image="https://toyzone.in/cdn/shop/products/72591.jpg?v=1668585650" title="green iguana" />
-                  <CardContent className="card-content-custom">
-                    <Typography gutterBottom variant="h5">
-                      Food Fest
-                    </Typography>
-                    <Typography variant="body2" className="price">
-                      Rs.399.00
-                    </Typography>
-                    <Typography variant="body2" className="old-price">
-                      Rs.599.00
-                    </Typography>
-                    <Button variant="contained" onClick={handleClick}
-                      color={flag ? "primary" : "secondary"} sx={{
-                        backgroundColor: 'white', color: 'black', padding: '10px', letterSpacing: '3px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', border: '2px solid', borderColor: 'black', fontWeight: 'bold', '&:hover': {
-                          backgroundColor: 'black', // Background color on hover
-                          color: 'white', // Font color on hover
-                        },
-                        '&:active': {
-                          backgroundColor: 'gray', // Background color on click
-                          color: 'white', // Font color on click
-                        },
-                      }}>
-                      ADD TO CART
-                    </Button><br></br>
-                    <Rating name="half-rating-read" defaultValue={2.5} precision={4.5} readOnly />
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid item className="grid-item">
-              <Card className="card-custom">
-                <CardActionArea>
-                  <Button sx={{ backgroundColor: '#F6BE00', fontWeight: 'bold', color: 'black', right: '30px', padding: '10px', fontFamily: 'sans-serif', fontSize: 'medium', marginLeft: '30px' }}>33% off</Button>
-                  <CardMedia className="card-media-custom" image="https://toyzone.in/cdn/shop/products/46_d00bf425-8007-4b84-8327-558af8144740.jpg?v=1668585732" title="green iguana" />
-                  <CardContent className="card-content-custom">
-                    <Typography gutterBottom variant="h5">
-                      Fast Cargo
-                    </Typography>
-                    <Typography variant="body2" className="price">
-                      Rs.399.00
-                    </Typography>
-                    <Typography variant="body2" className="old-price">
-                      Rs.599.00
-                    </Typography>
-                    <Button variant="contained" onClick={handleClick}
-                      color={flag ? "primary" : "secondary"} sx={{
-                        backgroundColor: 'white', color: 'black', padding: '10px', letterSpacing: '3px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', border: '2px solid', borderColor: 'black', fontWeight: 'bold', '&:hover': {
-                          backgroundColor: 'black', // Background color on hover
-                          color: 'white', // Font color on hover
-                        },
-                        '&:active': {
-                          backgroundColor: 'gray', // Background color on click
-                          color: 'white', // Font color on click
-                        },
-                      }}>
-                      ADD TO CART
-                    </Button><br></br>
-                    <Rating name="half-rating-read" defaultValue={2.5} precision={4.5} readOnly />
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          </Grid>
-        </Box>
-        <center>
+                      }}
+                      onClick={() => handleFavoriteClick(index)}
+                    >
+                      <Favorite />
+                    </IconButton>
+              <Button
+                sx={{
+                  backgroundColor: '#F6BE00',
+                  fontWeight: 'bold',
+                  color: 'black',
+                  padding: '10px',
+                  fontFamily: 'sans-serif',
+                  fontSize: 'medium',
+                  
+                  '&:hover': {
+                    backgroundColor: '#F6BE00',
+                    color: 'black',
+                  },
+                }}
+              >
+                {index === 0
+                  ? '20% OFF'
+                  : index === 1
+                  ? '25% OFF'
+                  : index === 2
+                  ? '30% OFF'
+                  : index === 3
+                  ? '40% OFF'
+                  : '50% OFF'}
+              </Button>
+              <CardMedia
+                sx={{ height: 200 }}
+                image={
+                  index === 0
+                    ? 'https://toyzone.in/cdn/shop/products/976458.jpg?v=1668512269'
+                    : index === 1
+                    ? 'https://toyzone.in/cdn/shop/products/54269.jpg?v=1668514009'
+                    : index === 2
+                    ? 'https://toyzone.in/cdn/shop/products/723934.jpg?v=1668491719'
+                    : index === 3
+                    ? 'https://toyzone.in/cdn/shop/products/72591.jpg?v=1668585650'
+                    : 'https://toyzone.in/cdn/shop/products/primary-image_9fd34c9c-aefd-4cb9-b91c-b8c93af4e42b_1024x1024@2x.jpg?v=1668079552'
+                }
+                title={`Product Image ${index + 1}`}
+              />
+              <CardContent className="card-content-custom">
+                <Typography gutterBottom variant="h5">
+                  {index === 0
+                    ? 'Super Premium Magic Car - Pink'
+                    : index === 1
+                    ? 'Vegga RC Car - Red'
+                    : index === 2
+                    ? 'Varuna Missile Launcher Truck'
+                    : index === 3
+                    ? 'Speedster Remote Control Boat'
+                    : 'Doll House'}
+                </Typography>
+                <Typography variant="body2" className="price">
+                  {index === 0
+                    ? 'Rs.1499.00'
+                    : index === 1
+                    ? 'Rs.799.00'
+                    : index === 2
+                    ? 'Rs.149.00'
+                    : index === 3
+                    ? 'Rs.2999.00'
+                    : 'Rs.4999.00'}
+                </Typography>
+                <Typography variant="body2" className="old-price">
+                  {index === 0
+                    ? 'Rs.1999.00'
+                    : index === 1
+                    ? 'Rs.1599.00'
+                    : index === 2
+                    ? 'Rs.299.00'
+                    : index === 3
+                    ? 'Rs.3999.00'
+                    : 'Rs.5999.00'}
+                </Typography>
+                <Button
+                  variant="contained"
+                  onClick={handleClick}
+                  color={flag ? "primary" : "secondary"}
+                  sx={{
+                    backgroundColor: 'white',
+                    color: 'black',
+                    padding: '10px',
+                    letterSpacing: '3px',
+                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+                    border: '2px solid',
+                    borderColor: 'black',
+                    fontWeight: 'bold',
+                    '&:hover': {
+                      backgroundColor: 'black', // Background color on hover
+                      color: 'white', // Font color on hover
+                    },
+                    '&:active': {
+                      backgroundColor: 'gray', // Background color on click
+                      color: 'white', // Font color on click
+                    },
+                  }}
+                >
+                  ADD TO CART
+                </Button>
+                <Rating
+                  name={`half-rating-read-${index}`}
+                  defaultValue={
+                    index === 0
+                      ? 4.0
+                      : index === 1
+                      ? 3.5
+                      : index === 2
+                      ? 4.5
+                      : index === 3
+                      ? 2.5
+                      : 5.0
+                  }
+                  precision={0.5}
+                  readOnly
+                />
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  </Box>
+</div>
+<center>
         <Button variant="contained" onClick={handleClick}
                       color={flag ? "primary" : "secondary"} sx={{bottom:'15px',borderRadius:'20px',padding:'15px',
                         backgroundColor: '#F6BE00', color: 'black', fontWeight: 'bold', '&:hover': {
@@ -219,6 +210,8 @@ const Home = () => {
                       New Arrivals
                     </Button>
                     </center>
+
+
 
                     <div style={{backgroundColor:'#FAE6E7'}}>
                         <div className='sh' style={{padding:'20px'}}>
