@@ -1,0 +1,56 @@
+
+  .rating-css {
+    height: 250px;
+    width: 400px;
+    background: #101012;
+    padding: 20px;
+    box-shadow: 4px 4px 2px #fdd01c;
+  }
+  .feedback-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+  }
+  .rating-css div {
+    color: #ffe400;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px 0;
+  }
+  
+  .rating-css input {
+    display: none;
+  }
+  
+  .rating-css input+label {
+    font-size: 60px;
+    text-shadow: 1px 1px 0 #ffe400;
+    cursor: pointer;
+  }
+  
+  .rating-css input:checked+label~label {
+    color: #838383;
+  }
+  
+  .rating-css label:active {
+    transform: scale(0.8);
+    transition: 0.3s ease;
+  }
+  
+  .btn {
+    border-radius: 20px;
+    color: #fff;
+    margin-top: 18px;
+    padding: 10px;
+    background-color: #F6BE00;
+    font-size: 15px;
+    border: none;
+    font-weight: 1000px;
+  }
+  .btn:hover {
+    background-color: #ffcc00;
+  }

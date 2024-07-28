@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../assets/css/Wish.css';
 import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, IconButton, Rating, Typography } from "@mui/material";
 import { Favorite } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const Wish = () => {
   const [flag, setFlag] = React.useState(true);
@@ -113,13 +114,14 @@ const Wish = () => {
                           ? 'Rs.3999.00'
                           : 'Rs.5999.00'}
                       </Typography>
+                      <Link to='/payment'>
                       <Button
                         variant="contained"
                         onClick={handleClick}
                         sx={{
                           backgroundColor: '#F6BE00', // Button background color
                           color: 'black', // Button text color
-                          left: '70px',
+                          width:'230px',
                           '&:hover': {
                             backgroundColor: '#FFC107', // Color when hovered
                             color: 'white', // Text color when hovered
@@ -127,7 +129,8 @@ const Wish = () => {
                         }}
                       >
                         Buy Now
-                      </Button><br />
+                      </Button>
+                      </Link><br />
                       <Rating
                         name={`half-rating-read-${index}`}
                         defaultValue={

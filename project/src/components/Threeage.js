@@ -6,32 +6,32 @@ import { Link } from "react-router-dom";
 
 const products = [
   {
-    image: "https://toyzone.in/cdn/shop/products/46_d00bf425-8007-4b84-8327-558af8144740.jpg?v=1668585732",
-    title: "Fast Cargo",
+    image: "https://toyzone.in/cdn/shop/products/12580-01_1024x1024@2x.jpg?v=1662438649",
+    title: "11 Pcs. Baby Rattles",
     price: "Rs.399.00",
     oldPrice: "Rs.599.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/21988_1024x1024@2x.jpg?v=1668494109",
-    title: "Dancing Strawberry",
+    image: "https://cdn.shopify.com/s/files/1/0654/2445/7966/products/6_4152ce85-5b0b-423d-8f18-b4f51788ab5e_600x.jpg?v=1666435280",
+    title: "Baby play Gym",
     price: "Rs.549.00",
     oldPrice: "Rs.799.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/D72515-6_1024x1024@2x.jpg?v=1668491662",
-    title: "My Road Runners-Van",
+    image: "https://toyzone.in/cdn/shop/products/primary-imaeg_c8ad9848-7b05-4818-8fa4-9ff7f41407e3_1024x1024@2x.png?v=1664259840",
+    title: "Baby Deluxe Bather - Blue",
     price: "Rs.199.00",
     oldPrice: "Rs.499.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/13112-B3_d7196418-8949-4fa0-b852-58f43881cf29_1024x1024@2x.png?v=1664260102",
-    title: "Baby Deluxe Bather - Pink",
+    image: "https://cdn.shopify.com/s/files/1/0654/2445/7966/files/IMG_0820_600x.jpg?v=1690541514",
+    title: "Bee pull String",
     price: "Rs.749.00",
     oldPrice: "Rs.1099.00"
   }
 ];
 
-export default function NewArrival() {
+export default function Threeage() {
   const [favorites, setFavorites] = useState(Array(products.length).fill(false));
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -47,12 +47,11 @@ export default function NewArrival() {
     setOpenSnackbar(false);
   };
 
-
   return (
     <div>
-      <div className="new">
-        <h5 className='new-arrival'>New Arrivals</h5>
-        <h1 className='product'>Products</h1>
+      <div className="three" style={{textAlign:'center',margin:'20px'}}>
+        <h5 className='three-age'>0 - 3 Years</h5>
+        <h1 className='three-product'>Products</h1>
       </div>
       <Box
         sx={{
@@ -114,14 +113,14 @@ export default function NewArrival() {
                     image={product.image}
                     title={product.title}
                   />
-                  <CardContent className="card-content-custom">
+                  <CardContent className="three-content-custom">
                     <Typography gutterBottom variant="h5">
                       {product.title}
                     </Typography>
-                    <Typography variant="body2" className="price">
+                    <Typography variant="body2" className="price" style={{fontWeight:'bold'}}>
                       {product.price}
                     </Typography>
-                    <Typography variant="body2" className="old-price">
+                    <Typography variant="body2" className="old-price" style={{color:'red',fontWeight:'bold',textDecoration:'line-through',marginLeft:'40px'}}>
                       {product.oldPrice}
                     </Typography>
                     <Link to='/payment'>

@@ -10,13 +10,14 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
 
-const Header = ({ cartItemCount, search, setSearch }) => {
+const Header = ({ isLoggedIn, setIsLoggedIn, cartItemCount, search, setSearch }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openCategoriesDialog, setOpenCategoriesDialog] = useState(false);
   const navigate = useNavigate();
 
   const handleMenu = (event) => {
@@ -36,6 +37,7 @@ const Header = ({ cartItemCount, search, setSearch }) => {
     navigate('/wish');
     handleClose();
   };
+
   const handleOrderClick = () => {
     navigate('/order');
     handleClose();
@@ -49,19 +51,29 @@ const Header = ({ cartItemCount, search, setSearch }) => {
   const handleLogoutConfirm = () => {
     // Clear user authentication data
     // Example: localStorage.removeItem('authToken');
-    // Redirect to login or home page
-    navigate('/login');  // Assuming you redirect to login page after logout
+    // Update login status
+    setIsLoggedIn(false);
+    // Redirect to login page
+    navigate('/');
     setOpenDialog(false);
   };
 
   const handleLogoutCancel = () => {
-    navigate('/');  // Redirect to the home page
     setOpenDialog(false);
+  };
+
+  const handleCategoriesClick = (event) => {
+    event.preventDefault();
+    setOpenCategoriesDialog(true);
+  };
+
+  const handleCategoriesDialogClose = () => {
+    setOpenCategoriesDialog(false);
   };
 
   return (
     <div>
-      <div className='home-container'>
+      <div className="home-container">
         <div className="left-content">
           <i className="fa fa-envelope"></i>
           <h3>support@toyzone.in</h3>
@@ -89,8 +101,12 @@ const Header = ({ cartItemCount, search, setSearch }) => {
         <nav>
           <ul>
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/about">Our Story</Link></li>
+            {isLoggedIn ? (
+              <li><a href="#" onClick={handleCategoriesClick}>Categories</a></li>
+            ) : (
+              <li><Link to="/login">Login</Link></li>
+            )}
+            <li><Link to="/about">About</Link></li>
             <li><Link to="/contact">Support</Link></li>
           </ul>
         </nav>
@@ -105,10 +121,11 @@ const Header = ({ cartItemCount, search, setSearch }) => {
           <div className="icons">
             <Link to="/cart">
               <i className="fas fa-shopping-cart add-to-cart-icon"></i>
-              <span>{cartItemCount}</span>
+              <span>4</span>
             </Link>
             <Link to="/wish">
               <i className="fas fa-heart wishlist-icon"></i>
+              <span>5</span>
             </Link>
           </div>
         </div>
@@ -141,10 +158,16 @@ const Header = ({ cartItemCount, search, setSearch }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
-                <MenuItem onClick={handleLogoutDialogOpen}>Log Out</MenuItem>
-                <MenuItem onClick={handleWishListClick}>WishList</MenuItem>
-                <MenuItem onClick={handleOrderClick}>Your Orders</MenuItem>
+                {isLoggedIn ? (
+                  <>
+                    <MenuItem onClick={handleProfileClick}>My Profile</MenuItem>
+                    <MenuItem onClick={handleWishListClick}>WishList</MenuItem>
+                    <MenuItem onClick={handleOrderClick}>Your Orders</MenuItem>
+                    <MenuItem onClick={handleLogoutDialogOpen}>Log Out</MenuItem>
+                  </>
+                ) : (
+                  <MenuItem onClick={() => navigate('/login')}>Login</MenuItem>
+                )}
               </Menu>
             </Toolbar>
           </AppBar>
@@ -170,6 +193,53 @@ const Header = ({ cartItemCount, search, setSearch }) => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Categories Dialog */}
+      <Dialog
+        open={openCategoriesDialog}
+        onClose={handleCategoriesDialogClose}
+        aria-labelledby="product-category-dialog-title"
+        aria-describedby="product-category-dialog-description"
+        sx={{
+          '& .MuiPaper-root': {
+            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Transparent background with white overlay
+            boxShadow: 'none',
+            borderRadius: '10px',
+          },
+        }}
+      >
+        <DialogTitle id="product-category-dialog-title">
+          {"Product Categories"}
+        </DialogTitle>
+        <DialogContent>
+          <ul>
+            <li><Link to="/category" className="dialog-link">All Categories</Link></li>
+            <li><Link to="/ride" className="dialog-link">Ride-on Toys</Link></li>
+            <li><Link to="/doll" className="dialog-link">Doll Houses</Link></li>
+            <li><Link to="/gun" className="dialog-link">Guns</Link></li>
+            <li><Link to="/baby" className="dialog-link">Baby Walker</Link></li>
+            <li><Link to="/edu" className="dialog-link">Educational</Link></li>
+            <li><Link to="/music" className="dialog-link">Musical Instrument</Link></li>
+            <li><Link to="/newarrival" className="dialog-link">New Arrivals</Link></li>
+          </ul>
+        </DialogContent>
+        <DialogTitle id="product-category-dialog-title">
+          {"Shop By Age"}
+        </DialogTitle>
+        <DialogContent>
+          <ul>
+          <li><Link to="/threeage" className="dialog-link">0 - 3 Years</Link></li>
+          <li><Link to="/eightage" className="dialog-link">3 - 8 Years</Link></li>
+          <li><Link to="/lastage" className="dialog-link">8+ Years</Link></li>
+          </ul>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCategoriesDialogClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
     </div>
   );
 };

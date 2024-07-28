@@ -88,4 +88,19 @@
   .signup a:hover {
     text-decoration: underline;
   }
-  
+  /* Dialog link styles */
+.dialog-link {
+  text-decoration: none;
+  color: black; /* Primary color */
+  font-weight: bold;
+}
+
+.dialog-link:hover {
+  color: #F6BE00; /* Hover color */
+  text-decoration: underline; /* Underline on hover */
+}
+
+/* Dialog list styles */
+.dialog-link + .dialog-link {
+  margin-top: 8px; /* Space between list items */
+}

@@ -6,32 +6,32 @@ import { Link } from "react-router-dom";
 
 const products = [
   {
-    image: "https://toyzone.in/cdn/shop/products/46_d00bf425-8007-4b84-8327-558af8144740.jpg?v=1668585732",
-    title: "Fast Cargo",
+    image: "https://toyzone.in/cdn/shop/products/976458.jpg?v=1668512269",
+    title: "Super Premium Magic Car",
+    price: "Rs.1499.00",
+    oldPrice: "Rs.1499.00"
+  },
+  {
+    image: "https://toyzone.in/cdn/shop/products/54269.jpg?v=1668514009",
+    title: "Vegga RC Car - Red",
+    price: "Rs.799.00",
+    oldPrice: "Rs.1599.00"
+  },
+  {
+    image: "https://toyzone.in/cdn/shop/products/723934.jpg?v=1668491719",
+    title: "Missile Launcher Truck",
+    price: "Rs.149.00",
+    oldPrice: "Rs.299.00"
+  },
+  {
+    image: "https://toyzone.in/cdn/shop/products/72591.jpg?v=1668585650",
+    title: "Food Fest",
     price: "Rs.399.00",
     oldPrice: "Rs.599.00"
-  },
-  {
-    image: "https://toyzone.in/cdn/shop/products/21988_1024x1024@2x.jpg?v=1668494109",
-    title: "Dancing Strawberry",
-    price: "Rs.549.00",
-    oldPrice: "Rs.799.00"
-  },
-  {
-    image: "https://toyzone.in/cdn/shop/products/D72515-6_1024x1024@2x.jpg?v=1668491662",
-    title: "My Road Runners-Van",
-    price: "Rs.199.00",
-    oldPrice: "Rs.499.00"
-  },
-  {
-    image: "https://toyzone.in/cdn/shop/products/13112-B3_d7196418-8949-4fa0-b852-58f43881cf29_1024x1024@2x.png?v=1664260102",
-    title: "Baby Deluxe Bather - Pink",
-    price: "Rs.749.00",
-    oldPrice: "Rs.1099.00"
   }
 ];
 
-export default function NewArrival() {
+export default function Ridetoy() {
   const [favorites, setFavorites] = useState(Array(products.length).fill(false));
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -50,9 +50,9 @@ export default function NewArrival() {
 
   return (
     <div>
-      <div className="new">
-        <h5 className='new-arrival'>New Arrivals</h5>
-        <h1 className='product'>Products</h1>
+      <div className="ride" style={{ textAlign: 'center', margin: '20px' }}>
+        <h5 className='ride-on toys'>Ride-on Toys</h5>
+        <h1 className='ride-product'>Products</h1>
       </div>
       <Box
         sx={{
@@ -114,14 +114,14 @@ export default function NewArrival() {
                     image={product.image}
                     title={product.title}
                   />
-                  <CardContent className="card-content-custom">
+                  <CardContent className="ride-content-custom">
                     <Typography gutterBottom variant="h5">
                       {product.title}
                     </Typography>
-                    <Typography variant="body2" className="price">
+                    <Typography variant="body2" className="price" style={{fontWeight:'bold'}}>
                       {product.price}
                     </Typography>
-                    <Typography variant="body2" className="old-price">
+                    <Typography variant="body2" className="old-price" style={{color:'red',fontWeight:'bold',textDecoration:'line-through',marginLeft:'40px'}}>
                       {product.oldPrice}
                     </Typography>
                     <Link to='/payment'>
@@ -160,4 +160,4 @@ export default function NewArrival() {
       </Snackbar>
     </div>
   );
-};
+}

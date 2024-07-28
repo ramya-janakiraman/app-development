@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import '../assets/css/Login.css';
-import { Link } from "react-router-dom";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 
-function Login() {
+function Login({ setIsLoggedIn }) {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -14,7 +18,15 @@ function Login() {
     password: "",
   });
 
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openCategoriesDialog, setOpenCategoriesDialog] = useState(false); // Added state for categories dialog
+
   const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -25,22 +37,47 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const formErrors = {};
+
     if (formData.email.trim() === "") {
       formErrors.email = "Enter Email";
+    } else if (!validateEmail(formData.email)) {
+      formErrors.email = "Enter a valid Email";
     }
+
     if (formData.password.trim() === "") {
       formErrors.password = "Enter Password";
+    } else if (formData.password.length < 6) {
+      formErrors.password = "Password must be at least 6 characters long";
     }
+
     if (Object.keys(formErrors).length > 0) {
       setError(formErrors);
     } else {
-      // Proceed with login logic
-      console.log(formData);
-      // Show success alert
-      alert('Login successful!');
-      // Redirect to the category page after successful login
-      navigate('/category'); // Change '/category' to the desired path
+      // Hardcoded email and password
+      const hardcodedEmail = 'j.ramya03.2005@gmail.com';
+      const hardcodedPassword = 'password';
+
+      if (formData.email === hardcodedEmail && formData.password === hardcodedPassword) {
+        // Show success alert
+        alert('Login successful!');
+        // Set login status
+        setIsLoggedIn(true);
+        // Open the dialog with product category items
+        setOpenDialog(true);
+        setOpenCategoriesDialog(true); // Open the categories dialog
+      } else {
+        setError({ email: 'Invalid email or password', password: '' });
+      }
     }
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    navigate('/category'); // Redirect to the category page after closing the dialog
+  };
+
+  const handleCategoriesDialogClose = () => {
+    setOpenCategoriesDialog(false); // Close the categories dialog
   };
 
   return (
@@ -84,6 +121,52 @@ function Login() {
           <Link to="/signup">Signup Now</Link>
         </div>
       </div>
+
+      {/* Product Category Dialog */}
+      <Dialog
+        open={openDialog}
+        onClose={handleDialogClose}
+        aria-labelledby="product-category-dialog-title"
+        aria-describedby="product-category-dialog-description"
+        sx={{
+          '& .MuiPaper-root': {
+            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Set the dialog background color to transparent with white overlay
+            boxShadow: 'none',
+            borderRadius: '10px',
+          },
+        }}
+      >
+        <DialogTitle id="product-category-dialog-title">
+          {"Product Categories"}
+        </DialogTitle>
+        <DialogContent>
+          <ul>
+            <li><Link to="/category" className="dialog-link">All Categories</Link></li>
+            <li><Link to="/ride" className="dialog-link">Ride-on Toys</Link></li>
+            <li><Link to="/doll" className="dialog-link">Doll Houses</Link></li>
+            <li><Link to="/gun" className="dialog-link">Guns</Link></li>
+            <li><Link to="/baby" className="dialog-link">Baby Walker</Link></li>
+            <li><Link to="/edu" className="dialog-link">Educational</Link></li>
+            <li><Link to="/music" className="dialog-link">Musical Instrument</Link></li>
+            <li><Link to="/newarrival" className="dialog-link">New Arrivals</Link></li>
+          </ul>
+        </DialogContent>
+        <DialogTitle id="product-category-dialog-title">
+          {"Shop By Age"}
+        </DialogTitle>
+        <DialogContent>
+          <ul>
+          <li><Link to="/threeage" className="dialog-link">0 - 3 Years</Link></li>
+          <li><Link to="/eightage" className="dialog-link">3 - 8 Years</Link></li>
+          <li><Link to="/lastage" className="dialog-link">8+ Years</Link></li>
+          </ul>
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={handleCategoriesDialogClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

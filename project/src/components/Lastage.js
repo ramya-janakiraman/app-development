@@ -6,32 +6,32 @@ import { Link } from "react-router-dom";
 
 const products = [
   {
-    image: "https://toyzone.in/cdn/shop/products/46_d00bf425-8007-4b84-8327-558af8144740.jpg?v=1668585732",
-    title: "Fast Cargo",
+    image: "https://cdn.shopify.com/s/files/1/0654/2445/7966/products/66682_600x.jpg?v=1666939474",
+    title: "Spiderman Scooter Gaint",
     price: "Rs.399.00",
     oldPrice: "Rs.599.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/21988_1024x1024@2x.jpg?v=1668494109",
-    title: "Dancing Strawberry",
+    image: "https://toyzone.in/cdn/shop/products/78_9d9bf54d-efc0-4998-8731-066dc534e792_1024x1024@2x.jpg?v=1665126186",
+    title: "Looney Tunes Racket Set",
     price: "Rs.549.00",
     oldPrice: "Rs.799.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/D72515-6_1024x1024@2x.jpg?v=1668491662",
-    title: "My Road Runners-Van",
+    image: "https://toyzone.in/cdn/shop/products/IRON-61151g_1024x1024@2x.jpg?v=1681894564",
+    title: "Ironman Gun",
     price: "Rs.199.00",
     oldPrice: "Rs.499.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/13112-B3_d7196418-8949-4fa0-b852-58f43881cf29_1024x1024@2x.png?v=1664260102",
-    title: "Baby Deluxe Bather - Pink",
+    image: "https://toyzone.in/cdn/shop/products/Space-Rider1_1024x1024@2x.jpg?v=1667826286",
+    title: "Space Rider",
     price: "Rs.749.00",
     oldPrice: "Rs.1099.00"
   }
 ];
 
-export default function NewArrival() {
+export default function Lastage() {
   const [favorites, setFavorites] = useState(Array(products.length).fill(false));
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -50,9 +50,9 @@ export default function NewArrival() {
 
   return (
     <div>
-      <div className="new">
-        <h5 className='new-arrival'>New Arrivals</h5>
-        <h1 className='product'>Products</h1>
+      <div className="last" style={{textAlign:'center',margin:'20px'}}>
+        <h5 className='last-age'>8+ Years</h5>
+        <h1 className='last-product'>Products</h1>
       </div>
       <Box
         sx={{
@@ -114,14 +114,14 @@ export default function NewArrival() {
                     image={product.image}
                     title={product.title}
                   />
-                  <CardContent className="card-content-custom">
+                  <CardContent className="last-content-custom">
                     <Typography gutterBottom variant="h5">
                       {product.title}
                     </Typography>
-                    <Typography variant="body2" className="price">
+                    <Typography variant="body2" className="price" style={{fontWeight:'bold'}}>
                       {product.price}
                     </Typography>
-                    <Typography variant="body2" className="old-price">
+                    <Typography variant="body2" className="old-price" style={{color:'red',fontWeight:'bold',textDecoration:'line-through',marginLeft:'40px'}}>
                       {product.oldPrice}
                     </Typography>
                     <Link to='/payment'>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Typography, Container, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Link } from 'react-router-dom';
 
 // Mock data for the items in the cart
 const initialItems = [
@@ -135,17 +136,20 @@ const AddToCartPage = () => {
                     +
                   </Button>
                 </Box>
+                <Link to='/payment'>
                 <Button
                   variant="contained"
                   sx={{
                     marginTop: '10px',
                     backgroundColor: '#F6BE00',
                     color: 'black',
+                    width:'200px',
                     '&:hover': { backgroundColor: '#F6BE00' },
                   }}
                 >
                   Buy Now
                 </Button>
+                </Link>
                 <IconButton
                   sx={{
                     position: 'absolute',

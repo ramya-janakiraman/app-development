@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between; /* Distribute space between items */
-  padding: 0 20px; /* Add some padding for spacing */
+  padding: 10px; /* Add some padding for spacing */
 }
 
 .home-container .left-content {
@@ -124,6 +124,7 @@
   display: flex;
   gap: 15px; /* Space between icons */
   margin-left: 15px; /* Add space between button and icons */
+  align-items: center;
 }
 
 .header .search-box .icons i {
@@ -162,4 +163,20 @@
   margin: 5px 0;
   background-color: #f6be00;
   border-radius: 10px;
+}
+
+.icons a {
+  margin-left: 10px;
+  color: #000; /* Adjust as needed */
+  position: relative;
+}
+.icons a span {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #F6BE00; /* Adjust as needed */
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 12px;
 }

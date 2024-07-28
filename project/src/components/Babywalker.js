@@ -1,37 +1,37 @@
 import React, { useState } from "react";
 import '../assets/css/Category.css';
-import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, IconButton, Rating, Snackbar, Typography } from "@mui/material";
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, IconButton, Rating, Typography, Snackbar, Alert } from "@mui/material";
 import { Favorite } from '@mui/icons-material';
 import { Link } from "react-router-dom";
 
 const products = [
   {
-    image: "https://toyzone.in/cdn/shop/products/46_d00bf425-8007-4b84-8327-558af8144740.jpg?v=1668585732",
-    title: "Fast Cargo",
+    image: "https://toyzone.in/cdn/shop/products/6_1024x1024@2x.jpg?v=1667806378",
+    title: "Baby Cat Walker",
     price: "Rs.399.00",
     oldPrice: "Rs.599.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/21988_1024x1024@2x.jpg?v=1668494109",
-    title: "Dancing Strawberry",
+    image: "https://toyzone.in/cdn/shop/products/Walker-11750-02_1024x1024@2x.jpg?v=1667818563",
+    title: "Baby Walker Rocking",
     price: "Rs.549.00",
     oldPrice: "Rs.799.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/D72515-6_1024x1024@2x.jpg?v=1668491662",
-    title: "My Road Runners-Van",
+    image: "https://cdn.shopify.com/s/files/1/0654/2445/7966/products/round-small-walker.7_600x.jpg?v=1666431034",
+    title: "Round Small Walker",
     price: "Rs.199.00",
     oldPrice: "Rs.499.00"
   },
   {
-    image: "https://toyzone.in/cdn/shop/products/13112-B3_d7196418-8949-4fa0-b852-58f43881cf29_1024x1024@2x.png?v=1664260102",
-    title: "Baby Deluxe Bather - Pink",
+    image: "https://toyzone.in/cdn/shop/products/My-little-sheep-baby-walker3_1024x1024@2x.png?v=1667825061",
+    title: "My Little Sheep Walker",
     price: "Rs.749.00",
     oldPrice: "Rs.1099.00"
   }
 ];
 
-export default function NewArrival() {
+export default function Babywalker() {
   const [favorites, setFavorites] = useState(Array(products.length).fill(false));
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -47,12 +47,11 @@ export default function NewArrival() {
     setOpenSnackbar(false);
   };
 
-
   return (
     <div>
-      <div className="new">
-        <h5 className='new-arrival'>New Arrivals</h5>
-        <h1 className='product'>Products</h1>
+      <div className="baby" style={{textAlign:'center',margin:'20px'}}>
+        <h5 className='baby-walker'>Baby Walker</h5>
+        <h1 className='walker-product'>Products</h1>
       </div>
       <Box
         sx={{
@@ -85,43 +84,42 @@ export default function NewArrival() {
                     <Favorite />
                   </IconButton>
                   <Button
-                sx={{
-                  backgroundColor: '#F6BE00',
-                  fontWeight: 'bold',
-                  color: 'black',
-                  padding: '10px',
-                  fontFamily: 'sans-serif',
-                  fontSize: 'medium',
-                  
-                  '&:hover': {
-                    backgroundColor: '#F6BE00',
-                    color: 'black',
-                  },
-                }}
-              >
-                {index === 0
-                  ? '20% OFF'
-                  : index === 1
-                  ? '25% OFF'
-                  : index === 2
-                  ? '30% OFF'
-                  : index === 3
-                  ? '40% OFF'
-                  : '50% OFF'}
-              </Button>
+                    sx={{
+                      backgroundColor: '#F6BE00',
+                      fontWeight: 'bold',
+                      color: 'black',
+                      padding: '10px',
+                      fontFamily: 'sans-serif',
+                      fontSize: 'medium',
+                      '&:hover': {
+                        backgroundColor: '#F6BE00',
+                        color: 'black',
+                      },
+                    }}
+                  >
+                    {index === 0
+                      ? '20% OFF'
+                      : index === 1
+                      ? '25% OFF'
+                      : index === 2
+                      ? '30% OFF'
+                      : index === 3
+                      ? '40% OFF'
+                      : '50% OFF'}
+                  </Button>
                   <CardMedia
                     sx={{ height: 300 }}
                     image={product.image}
                     title={product.title}
                   />
-                  <CardContent className="card-content-custom">
+                  <CardContent className="baby-content-custom">
                     <Typography gutterBottom variant="h5">
                       {product.title}
                     </Typography>
-                    <Typography variant="body2" className="price">
+                    <Typography variant="body2" className="price" style={{fontWeight:'bold'}}>
                       {product.price}
                     </Typography>
-                    <Typography variant="body2" className="old-price">
+                    <Typography variant="body2" className="old-price" style={{color:'red',fontWeight:'bold',textDecoration:'line-through',marginLeft:'40px'}}>
                       {product.oldPrice}
                     </Typography>
                     <Link to='/payment'>
@@ -149,15 +147,11 @@ export default function NewArrival() {
           ))}
         </Grid>
       </Box>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={2000}
-        onClose={handleSnackbarClose}
-      >
+      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
         <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
     </div>
   );
-};
+}
