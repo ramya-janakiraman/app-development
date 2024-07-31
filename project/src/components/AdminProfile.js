@@ -7,7 +7,7 @@ const AdminProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [profile, setProfile] = useState({
     name: 'Ramya Janakiraman',
-    email: 'ramya.j@example.com',
+    email: 'ramya.j@gmail.com',
     profilePicture: adminIm, // Use the imported image
   });
 
