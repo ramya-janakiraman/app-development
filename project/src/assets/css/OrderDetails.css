@@ -1,0 +1,42 @@
+/* OrderDetails.css */
+
+.order-details-container {
+    padding: 20px;
+    background-color: #fffbe7; /* Light yellow background */
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .order-details-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
+  }
+  
+  .order-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .order-details-table th, .order-details-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .order-details-table th {
+    background-color: #F6BE00; /* Bright yellow */
+    color: #333;
+  }
+  
+  .order-details-table td {
+    background-color: #fffde7; /* Light yellow */
+  }
+  
+  .order-details-table tr:nth-child(even) .order-details-table td {
+    background-color: #fff9c4; /* Slightly darker light yellow for even rows */
+  }
+  

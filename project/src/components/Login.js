@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
-function Login({ setIsLoggedIn }) {
+function Login({ setIsLoggedIn, setIsAdmin }) {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -19,7 +19,7 @@ function Login({ setIsLoggedIn }) {
   });
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [openCategoriesDialog, setOpenCategoriesDialog] = useState(false); // Added state for categories dialog
+  const [openCategoriesDialog, setOpenCategoriesDialog] = useState(false);
 
   const navigate = useNavigate();
 
@@ -56,6 +56,8 @@ function Login({ setIsLoggedIn }) {
       // Hardcoded email and password
       const hardcodedEmail = 'j.ramya03.2005@gmail.com';
       const hardcodedPassword = 'password';
+      const adminEmail = 'admin@gmail.com';
+      const adminPassword = 'adminpass';
 
       if (formData.email === hardcodedEmail && formData.password === hardcodedPassword) {
         // Show success alert
@@ -65,6 +67,14 @@ function Login({ setIsLoggedIn }) {
         // Open the dialog with product category items
         setOpenDialog(true);
         setOpenCategoriesDialog(true); // Open the categories dialog
+      } else if (formData.email === adminEmail && formData.password === adminPassword) {
+        // Show success alert
+        alert('Admin login successful!');
+        // Set login status
+        setIsAdmin(true);
+        setIsLoggedIn(true);
+        // Redirect to admin dashboard or perform admin-specific actions
+        navigate('/admin');
       } else {
         setError({ email: 'Invalid email or password', password: '' });
       }

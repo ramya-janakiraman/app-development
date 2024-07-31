@@ -27,13 +27,20 @@ import Lastage from './components/Lastage';
 import Payment from './components/Payment';
 import PaymentSuccess from './components/PaymentSuccess';
 import Feedback from './components/Feedback';
+import AdminDashboard from './components/AdminDashboard';
+import { AuthProvider } from './context/AuthContext';
+import AdminProfile from './components/AdminProfile';
+import AdminProfileEdit from './components/AdminProfileEdit';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [search, setSearch] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false);
 
   return (
+    
+    <AuthProvider>
     <Router>
       <Header
         isLoggedIn={isLoggedIn}
@@ -44,7 +51,7 @@ function App() {
       />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin}/>} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
@@ -66,9 +73,14 @@ function App() {
         <Route path='/payment' element={<Payment/>}/>
         <Route path='/success' element={<PaymentSuccess/>}/>
         <Route path='/feedback' element={<Feedback/>}/>
+        <Route path='/admin' element={<AdminDashboard/>}/>
+        <Route path='/admin-profile' element={<AdminProfile/>}/>
+        <Route path='/edit-profile' element={<AdminProfileEdit/>}/>
       </Routes>
       <Footer />
     </Router>
+    </AuthProvider>
+    
   );
 }
 
