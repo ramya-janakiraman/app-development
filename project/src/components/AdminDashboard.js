@@ -7,7 +7,6 @@ import AdminProfile from './AdminProfile'; // Import AdminProfile component
 import adminIm from '../assets/images/admin-im.webp';
 import '../assets/css/AdminDashboard.css';
 import { useAuth } from '../context/AuthContext';
-import AdminProfileEdit from './AdminProfileEdit';
 
 function AdminDashboard() {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ function AdminDashboard() {
       // case 'admineditprofile':
       //   return <AdminProfileEd />; // Render AdminProfile component for editing
       default:
-        return <AdminProfileEdit />;
+        return <AdminProfile />;
     }
   };
 

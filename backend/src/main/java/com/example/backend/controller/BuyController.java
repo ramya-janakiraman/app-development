@@ -14,46 +14,48 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.model.User;
-import com.example.backend.service.UserService;
+import com.example.backend.model.Buy;
+import com.example.backend.service.BuyService;
+
+
 
 
 
 
 @RestController
-public class UserController {
+public class BuyController {
     @Autowired
-    UserService ev;
-    @PostMapping("/post/user")
-    public ResponseEntity<User>addelements(@RequestBody User m)
+    BuyService bs;
+    @PostMapping("/post/buy")
+    public ResponseEntity<Buy>addelements(@RequestBody Buy b)
     {
-        User evt=ev.create(m);
-        return new ResponseEntity<>(evt,HttpStatus.CREATED);
+        Buy bst=bs.create(b);
+        return new ResponseEntity<>(bst,HttpStatus.CREATED);
     }
-    @GetMapping("/get/user")
-    public ResponseEntity<List<User>> showinfo()
+    @GetMapping("/get/buy")
+    public ResponseEntity<List<Buy>> showinfo()
     {
-        return new ResponseEntity<>(ev.getAll(),HttpStatus.OK);
+        return new ResponseEntity<>(bs.getAll(),HttpStatus.OK);
     }
-    @GetMapping("/get/user/{uid}")
-    public ResponseEntity<User> getById(@PathVariable Integer uid)
+    @GetMapping("/get/buy/{bid}")
+    public ResponseEntity<Buy> getById(@PathVariable Integer bid)
     {
-        User obj=ev.getId(uid);
+        Buy obj=bs.getId(bid);
         return new ResponseEntity<>(obj,HttpStatus.OK);
     }
-    @PutMapping("/put/{uid}")
-    public ResponseEntity<User> putMethodName(@PathVariable("uid") int uid, @RequestBody User e) {
-        if(ev.update(uid,e) == true)
+    @PutMapping("/put/{bid}")
+    public ResponseEntity<Buy> putMethodName(@PathVariable("bid") int bid, @RequestBody Buy b) {
+        if(bs.update(bid,b) == true)
         {
-            return new ResponseEntity<>(e,HttpStatus.OK);
+            return new ResponseEntity<>(b,HttpStatus.OK);
         }
         
         return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
     }
-    @DeleteMapping("/delete/{uid}")
-    public ResponseEntity<Boolean> delete(@PathVariable("uid") int uid)
+    @DeleteMapping("/delete/{bid}")
+    public ResponseEntity<Boolean> delete(@PathVariable("bid") int bid)
     {
-        if(ev.delete(uid) == true)
+        if(bs.delete(bid) == true)
         {
             return new ResponseEntity<>(true,HttpStatus.OK);
         }

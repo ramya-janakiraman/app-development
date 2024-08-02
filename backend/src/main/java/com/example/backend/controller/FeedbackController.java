@@ -14,46 +14,47 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.backend.model.User;
-import com.example.backend.service.UserService;
+import com.example.backend.model.Feedback;
+import com.example.backend.service.FeedbackService;
+
 
 
 
 
 @RestController
-public class UserController {
+public class FeedbackController {
     @Autowired
-    UserService ev;
-    @PostMapping("/post/user")
-    public ResponseEntity<User>addelements(@RequestBody User m)
+    FeedbackService fs;
+    @PostMapping("/post/feedback")
+    public ResponseEntity<Feedback>addelements(@RequestBody Feedback f)
     {
-        User evt=ev.create(m);
-        return new ResponseEntity<>(evt,HttpStatus.CREATED);
+        Feedback fst=fs.create(f);
+        return new ResponseEntity<>(fst,HttpStatus.CREATED);
     }
-    @GetMapping("/get/user")
-    public ResponseEntity<List<User>> showinfo()
+    @GetMapping("/get/feedback")
+    public ResponseEntity<List<Feedback>> showinfo()
     {
-        return new ResponseEntity<>(ev.getAll(),HttpStatus.OK);
+        return new ResponseEntity<>(fs.getAll(),HttpStatus.OK);
     }
-    @GetMapping("/get/user/{uid}")
-    public ResponseEntity<User> getById(@PathVariable Integer uid)
+    @GetMapping("/get/feedback/{fid}")
+    public ResponseEntity<Feedback> getById(@PathVariable Integer fid)
     {
-        User obj=ev.getId(uid);
+        Feedback obj=fs.getId(fid);
         return new ResponseEntity<>(obj,HttpStatus.OK);
     }
-    @PutMapping("/put/{uid}")
-    public ResponseEntity<User> putMethodName(@PathVariable("uid") int uid, @RequestBody User e) {
-        if(ev.update(uid,e) == true)
+    @PutMapping("/put/{fid}")
+    public ResponseEntity<Feedback> putMethodName(@PathVariable("fid") int fid, @RequestBody Feedback f) {
+        if(fs.update(fid,f) == true)
         {
-            return new ResponseEntity<>(e,HttpStatus.OK);
+            return new ResponseEntity<>(f,HttpStatus.OK);
         }
         
         return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
     }
-    @DeleteMapping("/delete/{uid}")
-    public ResponseEntity<Boolean> delete(@PathVariable("uid") int uid)
+    @DeleteMapping("/delete/{fid}")
+    public ResponseEntity<Boolean> delete(@PathVariable("fid") int fid)
     {
-        if(ev.delete(uid) == true)
+        if(fs.delete(fid) == true)
         {
             return new ResponseEntity<>(true,HttpStatus.OK);
         }

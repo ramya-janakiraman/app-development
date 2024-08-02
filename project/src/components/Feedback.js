@@ -1,61 +1,90 @@
-// src/components/Feedback.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../assets/css/Feedback.css';
 
-const Feedback = () => {
-  const [rating, setRating] = useState(0);
+const FeedbackForm = () => {
+  const [formData, setFormData] = useState({
+    rating: '',
+    description: '',
+  });
+  
+  const navigate = useNavigate();
 
-  const handleRatingChange = (event) => {
-    setRating(event.target.id);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
-  const handleSubmit = () => {
-    let message = '';
-    switch (rating) {
-      case 'rating1':
-        message = 'Thank you for your feedback! We are sorry that you had a poor experience.';
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Feedback submitted:', formData);
+    // Here you can add the logic to send the feedback to the backend or API
+    let alertMessage = '';
+    switch (formData.rating) {
+      case '1':
+        alertMessage = 'We are sorry to hear that you had a poor experience.';
         break;
-      case 'rating2':
-        message = 'Thank you for your feedback! We appreciate your suggestions for improvement.';
+      case '2':
+        alertMessage = 'Thank you for your feedback. We will strive to improve.';
         break;
-      case 'rating3':
-        message = 'Thank you for your feedback! We hope to make your next experience even better.';
+      case '3':
+        alertMessage = 'Thank you! We appreciate your feedback.';
         break;
-      case 'rating4':
-        message = 'Thank you for your feedback! We are glad you had a good experience.';
+      case '4':
+        alertMessage = 'Thank you for your feedback! We are glad you had a good experience.';
         break;
-      case 'rating5':
-        message = 'Thank you for your feedback! We are thrilled that you had a great experience!';
+      case '5':
+        alertMessage = 'Thank you for your excellent rating! We are thrilled to hear you had a great experience.';
         break;
       default:
-        message = 'Please select a rating before submitting your feedback.';
+        alertMessage = 'Thank you for your feedback!';
     }
-    alert(message);
+    window.alert(alertMessage);
+    setFormData({
+      rating: '',
+      description: '',
+    });
+    navigate('/');
   };
 
   return (
-    <div className='feedback-container'>
-      <div className="rating-css">
-        <div>Feedback Form</div>
-        <div className="star-icon">
-          <input type="radio" name="rating" id="rating1" onChange={handleRatingChange} />
-          <label htmlFor="rating1" className="fa fa-star"></label>
-          <input type="radio" name="rating" id="rating2" onChange={handleRatingChange} />
-          <label htmlFor="rating2" className="fa fa-star"></label>
-          <input type="radio" name="rating" id="rating3" onChange={handleRatingChange} />
-          <label htmlFor="rating3" className="fa fa-star"></label>
-          <input type="radio" name="rating" id="rating4" onChange={handleRatingChange} />
-          <label htmlFor="rating4" className="fa fa-star"></label>
-          <input type="radio" name="rating" id="rating5" onChange={handleRatingChange} />
-          <label htmlFor="rating5" className="fa fa-star"></label>
-          <button type="submit" className="btn" onClick={handleSubmit}>
-            <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>Submit</Link>
-          </button>
+    <div className="feedback-form-container">
+      <h2>Feedback Form</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="rating">Rating:</label>
+          <select
+            id="rating"
+            name="rating"
+            value={formData.rating}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select a rating</option>
+            <option value="1">1 - Poor</option>
+            <option value="2">2 - Fair</option>
+            <option value="3">3 - Good</option>
+            <option value="4">4 - Very Good</option>
+            <option value="5">5 - Excellent</option>
+          </select>
         </div>
-      </div>
+        <div className="form-group">
+          <label htmlFor="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          ></textarea>
+        </div>
+        <button type="submit" className="submit-button">Submit</button>
+      </form>
     </div>
   );
 };
 
-export default Feedback;
+export default FeedbackForm;
