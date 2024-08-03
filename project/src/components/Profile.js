@@ -7,8 +7,7 @@ const Profile = () => {
   const [userData, setUserData] = useState({
     name: '',
     email: '',
-    mobile: '', // Added mobile number
-    address: '',
+    mobile: '', // Mobile number
   });
   const [isEditing, setIsEditing] = useState(false);
 
@@ -19,7 +18,6 @@ const Profile = () => {
       name: 'Ramya J',
       email: 'ramya@example.com',
       mobile: '1234567890', // Example mobile number
-      address: '3/912, Police Line Street, R K Pet, 631303'
     };
     setUserData(fetchedData);
   }, []);

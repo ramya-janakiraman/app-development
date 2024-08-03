@@ -13,12 +13,33 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import Button from '@mui/material/Button';
+import { useAuth } from '../context/AuthContext';
 
-const Header = ({ isLoggedIn, setIsLoggedIn, cartItemCount, search, setSearch }) => {
+const Header = ({ cartItemCount, wishItemCount, search, setSearch }) => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [openCategoriesDialog, setOpenCategoriesDialog] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(search);
+  const [filteredCategories, setFilteredCategories] = useState([]);
+  const [showNotFound, setShowNotFound] = useState(false); // New state for not found alert
   const navigate = useNavigate();
+
+  const categoryMap = {
+    'new arrival': '/newarrival',
+    'ride-on toys': '/ride',
+    'doll houses': '/doll',
+    'guns': '/gun',
+    'baby walker': '/baby',
+    'educational': '/edu',
+    'musical instrument': '/music',
+    'all categories': '/category',
+    '0-3 years': '/threeage',
+    '3-8 years': '/eightage',
+    '8+ years': '/lastage',
+  };
+
+  const categories = Object.keys(categoryMap);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -49,11 +70,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn, cartItemCount, search, setSearch })
   };
 
   const handleLogoutConfirm = () => {
-    // Clear user authentication data
-    // Example: localStorage.removeItem('authToken');
-    // Update login status
     setIsLoggedIn(false);
-    // Redirect to login page
     navigate('/');
     setOpenDialog(false);
   };
@@ -69,6 +86,49 @@ const Header = ({ isLoggedIn, setIsLoggedIn, cartItemCount, search, setSearch })
 
   const handleCategoriesDialogClose = () => {
     setOpenCategoriesDialog(false);
+  };
+
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+
+    if (query) {
+      const filtered = categories.filter((category) =>
+        category.toLowerCase().includes(query.trim().toLowerCase())
+      );
+      setFilteredCategories(filtered);
+      setShowNotFound(filtered.length === 0); // Show "not found" if no categories match
+    } else {
+      setFilteredCategories([]);
+      setShowNotFound(false);
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    const lowerCaseQuery = searchQuery.trim().toLowerCase();
+
+    if (searchQuery.trim() === '') {
+      alert('Please enter a category to search.');
+      return;
+    }
+
+    if (categoryMap[lowerCaseQuery]) {
+      navigate(categoryMap[lowerCaseQuery]);
+      setSearchQuery('');
+      setFilteredCategories([]);
+      setShowNotFound(false); // Ensure "not found" is hidden when navigating to a valid category
+    } else {
+      alert('No categories found for your search.');
+      setShowNotFound(true); // Show "not found" alert if the category is not available
+    }
+  };
+
+  const handleCategorySelect = (category) => {
+    setSearchQuery(category);
+    setFilteredCategories([]);
+    setShowNotFound(false); // Hide "not found" alert when a category is selected
   };
 
   return (
@@ -111,21 +171,39 @@ const Header = ({ isLoggedIn, setIsLoggedIn, cartItemCount, search, setSearch })
           </ul>
         </nav>
         <div className="search-box">
-          <input
-            type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button type="submit">Search</button>
+          <form onSubmit={handleSearchSubmit}>
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            <button type="submit">Search</button>
+          </form>
+          {filteredCategories.length > 0 && (
+            <ul className="filtered-categories">
+              {filteredCategories.map((category) => (
+                <li key={category} onClick={() => handleCategorySelect(category)}>
+                  {category}
+                </li>
+              ))}
+            </ul>
+          )}
+          {showNotFound && (
+            <div className="not-found">No categories found.</div>
+          )}
           <div className="icons">
-            <Link to="/cart">
+            <Link to="/cart" className="cart-icon">
               <i className="fas fa-shopping-cart add-to-cart-icon"></i>
-              <span>4</span>
+              {cartItemCount > 0 && (
+                <span className="cart-count">{cartItemCount}</span>
+              )}
             </Link>
-            <Link to="/wish">
+            <Link to="/wish" className="wishlist-icon">
               <i className="fas fa-heart wishlist-icon"></i>
-              <span>5</span>
+              {wishItemCount > 0 && (
+                <span className="wishlist-count">{wishItemCount}</span>
+              )}
             </Link>
           </div>
         </div>
@@ -202,7 +280,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn, cartItemCount, search, setSearch })
         aria-describedby="product-category-dialog-description"
         sx={{
           '& .MuiPaper-root': {
-            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Transparent background with white overlay
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
             boxShadow: 'none',
             borderRadius: '10px',
           },
@@ -228,9 +306,9 @@ const Header = ({ isLoggedIn, setIsLoggedIn, cartItemCount, search, setSearch })
         </DialogTitle>
         <DialogContent>
           <ul>
-          <li><Link to="/threeage" className="dialog-link">0 - 3 Years</Link></li>
-          <li><Link to="/eightage" className="dialog-link">3 - 8 Years</Link></li>
-          <li><Link to="/lastage" className="dialog-link">8+ Years</Link></li>
+            <li><Link to="/threeage" className="dialog-link">0 - 3 Years</Link></li>
+            <li><Link to="/eightage" className="dialog-link">3 - 8 Years</Link></li>
+            <li><Link to="/lastage" className="dialog-link">8+ Years</Link></li>
           </ul>
         </DialogContent>
         <DialogActions>
@@ -239,7 +317,6 @@ const Header = ({ isLoggedIn, setIsLoggedIn, cartItemCount, search, setSearch })
           </Button>
         </DialogActions>
       </Dialog>
-      
     </div>
   );
 };

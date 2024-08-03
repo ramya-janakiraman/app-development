@@ -9,11 +9,8 @@ import Header from './components/Header';
 import SignUp from './components/SignUp';
 import Category from './components/Category';
 import NewArrival from './components/NewArrival';
-import Profile from './components/Profile';
 import Home from './components/Home';
 import Footer from './components/Footer';
-import Wish from './components/Wish';
-import AddToCartPage from './components/AddToCartPage';
 import Order from './components/Order';
 import Ridetoy from './components/Ridetoy';
 import Dollhouse from './components/Dollhouse';
@@ -31,12 +28,28 @@ import AdminDashboard from './components/AdminDashboard';
 import { AuthProvider } from './context/AuthContext';
 import AdminProfile from './components/AdminProfile';
 import AdminProfileEdit from './components/AdminProfileEdit';
+import AddressPage from './components/AddressPage';
+import CartPage from './components/CartPage';
+import WishlistPage from './components/WishlistPage';
+import Profile from './components/Profile';
+
+const initialProfile = {
+  name: 'John Doe',
+  email: 'john.doe@example.com',
+  profilePicture: 'https://via.placeholder.com/150',
+};
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [search, setSearch] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [profile, setProfile] = useState(initialProfile);
+
+  const handleProfileUpdate = (updatedProfile) => {
+    setProfile(updatedProfile);
+  };
+
 
   return (
     
@@ -57,9 +70,7 @@ function App() {
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/category" element={<Category />} />
         <Route path="/newarrival" element={<NewArrival />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/wish" element={<Wish />} />
-        <Route path="/cart" element={<AddToCartPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="/order" element={<Order />} />
         <Route path='/ride' element={<Ridetoy/>}/>
         <Route path='/doll' element={<Dollhouse/>}/>
@@ -76,11 +87,14 @@ function App() {
         <Route path='/admin' element={<AdminDashboard/>}/>
         <Route path='/admin-profile' element={<AdminProfile/>}/>
         <Route path='/edit-profile' element={<AdminProfileEdit/>}/>
+        <Route path='/address' element={<AddressPage/>}/>
+        <Route path='/wish' element={<WishlistPage/>}/>
+        <Route path="/profile" element={<Profile />} />
       </Routes>
       <Footer />
     </Router>
     </AuthProvider>
-    
+  
   );
 }
 

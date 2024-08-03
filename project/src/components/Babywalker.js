@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../assets/css/Category.css';
 import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, IconButton, Rating, Typography, Snackbar, Alert } from "@mui/material";
 import { Favorite } from '@mui/icons-material';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 
 const products = [
   {
@@ -31,15 +32,36 @@ const products = [
   }
 ];
 
+
 export default function Babywalker() {
-  const [favorites, setFavorites] = useState(Array(products.length).fill(false));
+  const [favorites, setFavorites] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const { isLoggedIn, setRedirectPath } = useAuth();
+  const navigate = useNavigate();
 
-  const handleFavoriteClick = (index) => {
-    const updatedFavorites = favorites.map((fav, i) => (i === index ? !fav : fav));
+  useEffect(() => {
+    // Retrieve wishlist items from local storage
+    const savedFavorites = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setFavorites(savedFavorites);
+  }, []);
+
+  const handleFavoriteClick = (product) => {
+    const isFavorite = favorites.some(fav => fav.title === product.title);
+    let updatedFavorites;
+
+    if (isFavorite) {
+      // Remove from favorites
+      updatedFavorites = favorites.filter(fav => fav.title !== product.title);
+      setSnackbarMessage('Removed from Favorites');
+    } else {
+      // Add to favorites
+      updatedFavorites = [...favorites, product];
+      setSnackbarMessage('Added to Favorites');
+    }
+
     setFavorites(updatedFavorites);
-    setSnackbarMessage(updatedFavorites[index] ? 'Added to Favorites' : 'Removed from Favorites');
+    localStorage.setItem('wishlist', JSON.stringify(updatedFavorites));
     setOpenSnackbar(true);
   };
 
@@ -47,9 +69,31 @@ export default function Babywalker() {
     setOpenSnackbar(false);
   };
 
+  const handleAddToCartClick = (product) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    setSnackbarMessage('Added to Cart');
+    setOpenSnackbar(true);
+  };
+
+  const handleBuyNowClick = (product) => {
+    if (isLoggedIn) {
+      navigate('/address');
+    } else {
+      alert('Please login to buy the product.');
+      setRedirectPath('/address');
+      navigate('/login');
+    }
+  };
+
+  const isFavorite = (product) => {
+    return favorites.some(fav => fav.title === product.title);
+  };
+
   return (
     <div>
-      <div className="baby" style={{textAlign:'center',margin:'20px'}}>
+      <div className="baby" style={{ textAlign: 'center', margin: '20px' }}>
         <h5 className='baby-walker'>Baby Walker</h5>
         <h1 className='walker-product'>Products</h1>
       </div>
@@ -65,7 +109,7 @@ export default function Babywalker() {
       >
         <Grid container spacing={2} sx={{ padding: '50px' }}>
           {products.map((product, index) => (
-            <Grid item xs={3} key={index}>
+            <Grid item xs={12} sm={6} md={3} key={index}>
               <Card sx={{ maxWidth: 400 }}>
                 <CardActionArea sx={{ '&:hover': { backgroundColor: 'transparent' } }}>
                   <IconButton
@@ -74,12 +118,12 @@ export default function Babywalker() {
                       top: 10,
                       right: 10,
                       borderColor: '#F6BE00',
-                      color: favorites[index] ? '#F6BE00' : 'grey',
+                      color: isFavorite(product) ? '#F6BE00' : 'grey',
                       '&:hover': {
                         color: '#F6BE00',
                       },
                     }}
-                    onClick={() => handleFavoriteClick(index)}
+                    onClick={() => handleFavoriteClick(product)}
                   >
                     <Favorite />
                   </IconButton>
@@ -116,28 +160,54 @@ export default function Babywalker() {
                     <Typography gutterBottom variant="h5">
                       {product.title}
                     </Typography>
-                    <Typography variant="body2" className="price" style={{fontWeight:'bold'}}>
+                    <Typography variant="body2" className="price" style={{ fontWeight: 'bold' }}>
                       {product.price}
                     </Typography>
-                    <Typography variant="body2" className="old-price" style={{color:'red',fontWeight:'bold',textDecoration:'line-through',marginLeft:'40px'}}>
+                    <Typography variant="body2" className="old-price" style={{ color: 'red', fontWeight: 'bold', textDecoration: 'line-through', marginLeft: '40px' }}>
                       {product.oldPrice}
                     </Typography>
-                    <Link to='/payment'>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: '#F6BE00',
-                        color: 'black',
-                        width:'300px',
-                        '&:hover': {
-                          backgroundColor: '#FFC107',
-                          color: 'white',
-                        },
-                      }}
-                    >
-                      Buy Now
-                    </Button>
-                    </Link>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: 'white',
+                          color: 'black',
+                          padding: '10px',
+                          letterSpacing: '3px',
+                          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+                          border: '2px solid',
+                          borderColor: 'black',
+                          fontWeight: 'bold',
+                          '&:hover': {
+                            backgroundColor: 'black',
+                            color: 'white',
+                          },
+                          '&:active': {
+                            backgroundColor: 'gray',
+                            color: 'white',
+                          },
+                        }}
+                        onClick={() => handleAddToCartClick(product)}
+                      >
+                        ADD TO CART
+                      </Button>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: '#F6BE00',
+                          color: 'black',
+                          height: '50px',
+                          width: '150px',
+                          '&:hover': {
+                            backgroundColor: '#FFC107',
+                            color: 'white',
+                          },
+                        }}
+                        onClick={() => handleBuyNowClick(product)}
+                      >
+                        Buy Now
+                      </Button>
+                    </Box>
                     <br />
                     <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
                   </CardContent>

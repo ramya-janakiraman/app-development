@@ -1,35 +1,65 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../assets/css/Home.css';
 import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, IconButton, Rating, Snackbar, Typography } from "@mui/material";
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { Favorite } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Home = () => {
-  const [flag, setFlag] = React.useState(true);
-  const handleClick = () => {
-    setFlag(!flag);
-  };
-
-  const [favorites, setFavorites] = useState(Array(5).fill(false));
+  const [favorites, setFavorites] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [redirect, setRedirect] = useState(false);
+  const [flag, setFlag] = useState(false);
+  const navigate = useNavigate();
 
-  // Handle click for favorite icon
-  const handleFavoriteClick = (index) => {
-    setFavorites(favorites.map((fav, i) => (i === index ? !fav : fav)));
+  useEffect(() => {
+    // Retrieve wishlist items from local storage
+    const savedFavorites = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setFavorites(savedFavorites);
+  }, []);
+
+  const handleFavoriteClick = (product) => {
+    const isFavorite = favorites.some(fav => fav.title === product.title);
+    let updatedFavorites;
+
+    if (isFavorite) {
+      // Remove from favorites
+      updatedFavorites = favorites.filter(fav => fav.title !== product.title);
+      setSnackbarMessage('Removed from Wishlist');
+    } else {
+      // Add to favorites
+      updatedFavorites = [...favorites, product];
+      setSnackbarMessage('Added to Wishlist');
+    }
+
+    setFavorites(updatedFavorites);
+    localStorage.setItem('wishlist', JSON.stringify(updatedFavorites));
+    setOpenSnackbar(true);
   };
+
   const handleAddToCartClick = (product) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = [...cart, product];
+    localStorage.setItem('cart', JSON.stringify(cart));
     setSnackbarMessage(`${product.title} added to cart`);
     setOpenSnackbar(true);
+    setRedirect(true);
   };
 
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
+    if (redirect) {
+      navigate('/cart');
+    }
   };
+
+  const handleClick = () => {
+    // Handle click events here if needed
+  };
+
   const products = [
     {
       title: 'Super Premium Magic Car - Pink',
@@ -72,11 +102,11 @@ const Home = () => {
       rating: 5.0
     }
   ];
-  
+
   return (
     <div>
       
-      <Carousel>
+      <Carousel interval={2000}>
         <Carousel.Item>
           <img className="d-block w-100" src="https://toyzone.in/cdn/shop/files/99-store_0ac2798c-09fa-4c4e-99f1-7241d0ded53d.jpg?v=1672121636" alt="Toys" width="1000" height="600" />
         </Carousel.Item>
@@ -89,9 +119,12 @@ const Home = () => {
         <Carousel.Item>
           <img className="d-block w-100" src="https://toyzone.in/cdn/shop/files/magic-car-banner_171f3762-e6e5-4e34-a1df-f93f88ac3f62.jpg?v=1686133287" alt="New York" width="1000" height="600" />
         </Carousel.Item>
+        <Carousel.Item>
+          <img className="d-block w-100" src="https://cdn.pixelbin.io/v2/black-bread-289bfa/HrdP6X/original/hamleys-banner/1719403759Desktop_Banner_(4).webp" alt="New York" width="1000" height="600" />
+        </Carousel.Item>
       </Carousel>
-<br></br>
-<div>
+      <br />
+      <div>
         <div className='new'>
           <h5 className='new-arrival'>New Arrivals</h5>
           <h1 className='product'>Products</h1>
@@ -108,21 +141,28 @@ const Home = () => {
             <br />
             <Grid container spacing={2} sx={{ padding: '50px' }}>
               {products.map((product, index) => (
-                <Grid item xs={2.4} key={index}> {/* Adjusted size for more cards in a row */}
-                  <Card sx={{ maxWidth: 300 }}> {/* Adjusted width for smaller cards */}
-                    <CardActionArea sx={{ '&:hover': { backgroundColor: 'transparent' } }}>
+                <Grid item xs={2.4} key={index}>
+                  <Card sx={{ maxWidth: 300 }}>
+                    <CardActionArea
+                      sx={{
+                        position: 'relative',
+                        '&:hover': {
+                          backgroundColor: 'rgba(0, 0, 0, 0.1)', // Transparent background on hover
+                        },
+                      }}
+                    >
                       <IconButton
                         sx={{
                           position: 'absolute',
                           top: 10,
                           right: 10,
                           borderColor: '#F6BE00',
-                          color: favorites[index] ? '#F6BE00' : 'grey',
+                          color: favorites.some(fav => fav.title === product.title) ? '#F6BE00' : 'grey',
                           '&:hover': {
-                            color: '#F6BE00', // Change color on hover
+                            color: '#F6BE00',
                           },
                         }}
-                        onClick={() => handleFavoriteClick(index)}
+                        onClick={() => handleFavoriteClick(product)}
                       >
                         <Favorite />
                       </IconButton>
@@ -159,7 +199,7 @@ const Home = () => {
                         </Typography>
                         <Button
                           variant="contained"
-                          color={flag ? "primary" : "secondary"}
+                          color="primary"
                           sx={{
                             backgroundColor: 'white',
                             color: 'black',
@@ -170,24 +210,19 @@ const Home = () => {
                             borderColor: 'black',
                             fontWeight: 'bold',
                             '&:hover': {
-                              backgroundColor: 'black', // Background color on hover
-                              color: 'white', // Font color on hover
+                              backgroundColor: 'black',
+                              color: 'white',
                             },
                             '&:active': {
-                              backgroundColor: 'gray', // Background color on click
-                              color: 'white', // Font color on click
+                              backgroundColor: 'gray',
+                              color: 'white',
                             },
                           }}
                           onClick={() => handleAddToCartClick(product)}
                         >
                           ADD TO CART
                         </Button>
-                        <Rating
-                          name={`half-rating-read-${index}`}
-                          defaultValue={product.rating}
-                          precision={0.5}
-                          readOnly
-                        />
+                        <Rating name="read-only" value={product.rating} readOnly />
                       </CardContent>
                     </CardActionArea>
                   </Card>
@@ -195,16 +230,15 @@ const Home = () => {
               ))}
             </Grid>
           </Box>
-          <Snackbar
-            open={openSnackbar}
-            autoHideDuration={2000}
-            onClose={handleSnackbarClose}
-          >
-            <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
-              {snackbarMessage}
-            </Alert>
-          </Snackbar>
-        </div>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
+      />
+    </div>
+
 <center>
         <Link to="/newarrival">
         <Button variant="contained" onClick={handleClick}

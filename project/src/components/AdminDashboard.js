@@ -11,7 +11,7 @@ import { useAuth } from '../context/AuthContext';
 function AdminDashboard() {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const [activeComponent, setActiveComponent] = useState('users');
+  const [activeComponent, setActiveComponent] = useState('profile'); // Set default to 'profile'
 
   const handleLogout = () => {
     logout();
@@ -48,7 +48,6 @@ function AdminDashboard() {
           <li><Link to="#" onClick={() => setActiveComponent('users')}>Total Users</Link></li>
           <li><Link to="#" onClick={() => setActiveComponent('bichart')}>BI Chart</Link></li>
           <li><Link to="#" onClick={() => setActiveComponent('orderdetails')}>Order Details</Link></li>
-          
         </ul>
         <button onClick={handleLogout} className="logout-button">Logout</button>
       </div>

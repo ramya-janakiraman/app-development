@@ -1,24 +1,20 @@
+// AuthContext.js
 import React, { createContext, useState, useContext } from 'react';
 
-// Create the context
 const AuthContext = createContext();
 
-// Create a provider component
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [redirectPath, setRedirectPath] = useState(null);
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, isAdmin, setIsAdmin, redirectPath, setRedirectPath }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-// Custom hook to use the AuthContext
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
-export default AuthContext;

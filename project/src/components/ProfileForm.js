@@ -42,14 +42,7 @@ const ProfileForm = ({ userData, onSave, onCancel }) => {
           onChange={handleChange} 
         />
       </div>
-      <div className="form-group">
-        <label>Address:</label>
-        <textarea 
-          name="address" 
-          value={formData.address} 
-          onChange={handleChange} 
-        />
-      </div>
+     
       <button type="submit">Save</button>
       <button type="button" onClick={onCancel}>Cancel</button>
     </form>

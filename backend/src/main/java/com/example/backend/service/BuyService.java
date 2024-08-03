@@ -21,12 +21,12 @@ public class BuyService {
         return buyRepo.findAll();
     }
 
-    public Buy getId(int bid) {
-        return buyRepo.findById(bid).orElse(null);
+    public Buy getId(int aid) {
+        return buyRepo.findById(aid).orElse(null);
     }
 
-    public boolean update(int bid, Buy buy) {
-        if (this.getId(bid) == null) {
+    public boolean update(int aid, Buy buy) {
+        if (this.getId(aid) == null) {
             return false;
         }
         try {
@@ -37,11 +37,11 @@ public class BuyService {
         return true;
     }
 
-    public boolean delete(int bid) {
-        if (this.getId(bid) == null) {
+    public boolean delete(int aid) {
+        if (this.getId(aid) == null) {
             return false;
         }
-        buyRepo.deleteById(bid);
+        buyRepo.deleteById(aid);
         return true;
     }
 }

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import '../assets/css/Category.css';
+import React, { useState, useEffect } from "react";
 import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, IconButton, Rating, Typography, Snackbar, Alert } from "@mui/material";
 import { Favorite } from '@mui/icons-material';
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { useAuth } from '../context/AuthContext'; // Import useAuth hook
+import '../assets/css/Category.css';
 
 const products = [
   {
@@ -25,21 +26,41 @@ const products = [
   },
   {
     image: "https://toyzone.in/cdn/shop/products/81524-03_1024x1024@2x.jpg?v=1662545549",
-    title: "IQ Acitivity Center 5 in 1",
+    title: "IQ Activity Center 5 in 1",
     price: "Rs.749.00",
     oldPrice: "Rs.1099.00"
   }
 ];
 
 export default function Educational() {
-  const [favorites, setFavorites] = useState(Array(products.length).fill(false));
+  const [favorites, setFavorites] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const { isLoggedIn, setRedirectPath } = useAuth(); // Use the useAuth hook
+  const navigate = useNavigate(); // Use the useNavigate hook
 
-  const handleFavoriteClick = (index) => {
-    const updatedFavorites = favorites.map((fav, i) => (i === index ? !fav : fav));
+  useEffect(() => {
+    // Retrieve wishlist items from local storage
+    const savedFavorites = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setFavorites(savedFavorites);
+  }, []);
+
+  const handleFavoriteClick = (product) => {
+    const isFavorite = favorites.some(fav => fav.title === product.title);
+    let updatedFavorites;
+
+    if (isFavorite) {
+      // Remove from favorites
+      updatedFavorites = favorites.filter(fav => fav.title !== product.title);
+      setSnackbarMessage('Removed from Favorites');
+    } else {
+      // Add to favorites
+      updatedFavorites = [...favorites, product];
+      setSnackbarMessage('Added to Favorites');
+    }
+
     setFavorites(updatedFavorites);
-    setSnackbarMessage(updatedFavorites[index] ? 'Added to Favorites' : 'Removed from Favorites');
+    localStorage.setItem('wishlist', JSON.stringify(updatedFavorites));
     setOpenSnackbar(true);
   };
 
@@ -47,10 +68,33 @@ export default function Educational() {
     setOpenSnackbar(false);
   };
 
+  const handleAddToCartClick = (product) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    setSnackbarMessage('Added to Cart');
+    setOpenSnackbar(true);
+  };
+
+  const isFavorite = (product) => {
+    return favorites.some(fav => fav.title === product.title);
+  };
+
+  const handleBuyNow = (product) => {
+    if (isLoggedIn) {
+      handleAddToCartClick(product); // Optionally add the product to cart
+      navigate('/address');
+    } else {
+      alert('Please login to buy the product.');
+      setRedirectPath('/address');
+      navigate('/login');
+    }
+  };
+
   return (
     <div>
       <div className="edu" style={{ textAlign: 'center', margin: '20px' }}>
-        <h5 className='educational'>Educational</h5>
+        <h5 className='edu-house'>Educational</h5>
         <h1 className='edu-product'>Products</h1>
       </div>
       <Box
@@ -74,12 +118,12 @@ export default function Educational() {
                       top: 10,
                       right: 10,
                       borderColor: '#F6BE00',
-                      color: favorites[index] ? '#F6BE00' : 'grey',
+                      color: isFavorite(product) ? '#F6BE00' : 'grey',
                       '&:hover': {
                         color: '#F6BE00',
                       },
                     }}
-                    onClick={() => handleFavoriteClick(index)}
+                    onClick={() => handleFavoriteClick(product)}
                   >
                     <Favorite />
                   </IconButton>
@@ -122,24 +166,50 @@ export default function Educational() {
                     <Typography variant="body2" className="old-price" style={{ color: 'red', fontWeight: 'bold', textDecoration: 'line-through', marginLeft: '40px' }}>
                       {product.oldPrice}
                     </Typography>
-                    <Link to='/payment'>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: 'white',
+                          color: 'black',
+                          padding: '10px',
+                          letterSpacing: '3px',
+                          boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+                          border: '2px solid',
+                          borderColor: 'black',
+                          fontWeight: 'bold',
+                          '&:hover': {
+                            backgroundColor: 'black',
+                            color: 'white',
+                          },
+                          '&:active': {
+                            backgroundColor: 'gray',
+                            color: 'white',
+                          },
+                        }}
+                        onClick={() => handleAddToCartClick(product)}
+                      >
+                        ADD TO CART
+                      </Button>
                       <Button
                         variant="contained"
                         sx={{
                           backgroundColor: '#F6BE00',
                           color: 'black',
-                          width: '300px',
+                          height: '50px',
+                          width: '150px',
                           '&:hover': {
                             backgroundColor: '#FFC107',
                             color: 'white',
                           },
                         }}
+                        onClick={() => handleBuyNow(product)}
                       >
                         Buy Now
                       </Button>
-                    </Link>
+                    </Box>
                     <br />
-                    <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
+                    <Rating name="half-rating-read" defaultValue={4.5} precision={0.5} readOnly />
                   </CardContent>
                 </CardActionArea>
               </Card>

@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import '../assets/css/Category.css';
-import { Alert, Box, Button, Card,CardActionArea,CardContent, CardMedia, Grid, IconButton, Rating, Snackbar, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, IconButton, Rating, Snackbar, Typography } from "@mui/material";
 import { Favorite } from '@mui/icons-material';
-import { Link } from "react-router-dom";
-
-  <Box 
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
->
-</Box>
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 
 const products = [
   {
@@ -156,20 +151,35 @@ const products = [
     oldPrice: "Rs.1499.00",
   },
 ];
-
 export default function Category() {
-  const [flag, setFlag] = React.useState(true);
-  const handleClick = () => {
-    setFlag(!flag);
-  };
-  const [favorites, setFavorites] = useState(Array(products.length).fill(false));
+  const [favorites, setFavorites] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const { isLoggedIn, setRedirectPath } = useAuth();
+  const navigate = useNavigate();
 
-  const handleFavoriteClick = (index) => {
-    const updatedFavorites = favorites.map((fav, i) => (i === index ? !fav : fav));
+  useEffect(() => {
+    // Retrieve wishlist items from local storage
+    const savedFavorites = JSON.parse(localStorage.getItem('wishlist')) || [];
+    setFavorites(savedFavorites);
+  }, []);
+
+  const handleFavoriteClick = (product) => {
+    const isFavorite = favorites.some(fav => fav.title === product.title);
+    let updatedFavorites;
+
+    if (isFavorite) {
+      // Remove from favorites
+      updatedFavorites = favorites.filter(fav => fav.title !== product.title);
+      setSnackbarMessage('Removed from Favorites');
+    } else {
+      // Add to favorites
+      updatedFavorites = [...favorites, product];
+      setSnackbarMessage('Added to Favorites');
+    }
+
     setFavorites(updatedFavorites);
-    setSnackbarMessage(updatedFavorites[index] ? 'Added to Favorites' : 'Removed from Favorites');
+    localStorage.setItem('wishlist', JSON.stringify(updatedFavorites));
     setOpenSnackbar(true);
   };
 
@@ -177,6 +187,27 @@ export default function Category() {
     setOpenSnackbar(false);
   };
 
+  const handleAddToCartClick = (product) => {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(product);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    setSnackbarMessage('Added to Cart');
+    setOpenSnackbar(true);
+  };
+
+  const handleBuyNowClick = () => {
+    if (isLoggedIn) {
+      navigate('/address');
+    } else {
+      alert('Please login to buy the product.');
+      setRedirectPath('/address');
+      navigate('/login');
+    }
+  };
+
+  const isFavorite = (product) => {
+    return favorites.some(fav => fav.title === product.title);
+  };
 
   return (
     <div style={{ backgroundColor: '#fff7cc', backgroundSize: 'cover' }}>
@@ -203,56 +234,55 @@ export default function Category() {
                         position: 'absolute',
                         top: 10,
                         right: 10,
-                        color: favorites[index] ? '#F6BE00' : 'grey',
+                        color: isFavorite(product) ? '#F6BE00' : 'grey',
                         '&:hover': {
                           color: '#F6BE00',
                         },
                       }}
-                      onClick={() => handleFavoriteClick(index)}
+                      onClick={() => handleFavoriteClick(product)}
                     >
                       <Favorite />
                     </IconButton>
                     <Button
-                sx={{
-                  backgroundColor: '#F6BE00',
-                  fontWeight: 'bold',
-                  color: 'black',
-                  padding: '10px',
-                  fontFamily: 'sans-serif',
-                  fontSize: 'medium',
-                  
-                  '&:hover': {
-                    backgroundColor: '#F6BE00',
-                    color: 'black',
-                  },
-                }}
-              >
-                {index === 0
-                  ? '20% OFF'
-                  : index === 1
-                  ? '25% OFF'
-                  : index === 2
-                  ? '30% OFF'
-                  : index === 3
-                  ? '40% OFF'
-                  :index === 4
-                  ? '20% OFF'
-                  : index === 6
-                  ? '25% OFF'
-                  : index === 7
-                  ? '30% OFF'
-                  : index === 8
-                  ? '40% OFF'
-                  :index === 9
-                  ? '20% OFF'
-                  : index === 10
-                  ? '25% OFF'
-                  : index === 11
-                  ? '30% OFF'
-                  : index === 12
-                  ? '40% OFF'
-                  : '50% OFF'}
-              </Button>
+                      sx={{
+                        backgroundColor: '#F6BE00',
+                        fontWeight: 'bold',
+                        color: 'black',
+                        padding: '10px',
+                        fontFamily: 'sans-serif',
+                        fontSize: 'medium',
+                        '&:hover': {
+                          backgroundColor: '#F6BE00',
+                          color: 'black',
+                        },
+                      }}
+                    >
+                      {index === 0
+                        ? '20% OFF'
+                        : index === 1
+                        ? '25% OFF'
+                        : index === 2
+                        ? '30% OFF'
+                        : index === 3
+                        ? '40% OFF'
+                        : index === 4
+                        ? '20% OFF'
+                        : index === 6
+                        ? '25% OFF'
+                        : index === 7
+                        ? '30% OFF'
+                        : index === 8
+                        ? '40% OFF'
+                        : index === 9
+                        ? '20% OFF'
+                        : index === 10
+                        ? '25% OFF'
+                        : index === 11
+                        ? '30% OFF'
+                        : index === 12
+                        ? '40% OFF'
+                        : '50% OFF'}
+                    </Button>
                     <CardMedia
                       sx={{ height: 300 }}
                       image={product.image}
@@ -268,25 +298,50 @@ export default function Category() {
                       <Typography variant="body2" className="old-price">
                         {product.oldPrice}
                       </Typography>
-                      <Link to='/payment'>
-                      <Button
-                        variant="contained"
-                        onClick={handleClick}
-                        sx={{
-                          backgroundColor: '#F6BE00',
-                          color: 'black',
-                          width:'300px',
-                          '&:hover': {
-                            backgroundColor: '#FFC107',
-                            color: 'white',
-                          },
-                        }}
-                      >
-                        Buy Now
-                      </Button>
-                      </Link>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: 'white',
+                            color: 'black',
+                            padding: '10px',
+                            letterSpacing: '3px',
+                            boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+                            border: '2px solid',
+                            borderColor: 'black',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                              backgroundColor: 'black',
+                              color: 'white',
+                            },
+                            '&:active': {
+                              backgroundColor: 'gray',
+                              color: 'white',
+                            },
+                          }}
+                          onClick={() => handleAddToCartClick(product)}
+                        >
+                          ADD TO CART
+                        </Button>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: '#F6BE00',
+                            color: 'black',
+                            height: '50px',
+                            width: '150px',
+                            '&:hover': {
+                              backgroundColor: '#FFC107',
+                              color: 'white',
+                            },
+                          }}
+                          onClick={handleBuyNowClick}
+                        >
+                          Buy Now
+                        </Button>
+                      </Box>
                       <br />
-                      <Rating name="half-rating-read" defaultValue={2.5} precision={0.5} readOnly />
+                      <Rating name="half-rating-read" defaultValue={5.0} precision={0.5} readOnly />
                     </CardContent>
                   </CardActionArea>
                 </Card>
