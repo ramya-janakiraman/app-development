@@ -1,0 +1,227 @@
+/* Import FontAwesome icons */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* Container for the top bar with email and social icons */
+.home-container {
+  background-color: #F6BE00;
+  position: relative;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribute space between items */
+  padding: 10px; /* Add some padding for spacing */
+}
+
+.home-container .left-content {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between icon and text */
+}
+
+.home-container i {
+  font-size: 1.5rem; 
+}
+
+.home-container h3 {
+  font-family: serif;
+  font-weight: 900;
+  font-size: 20px !important; 
+  margin: 0; /* Remove default margin */
+}
+
+.home-container h4 {
+  font-family: sans-serif;
+  font-size: 20px !important; /* Adjust size as needed */
+  margin: 0; /* Remove default margin */
+}
+
+.social-icons {
+  display: flex;
+  gap: 10px; /* Space between each icon */
+}
+
+.social-icons a {
+  color: black; /* Default color of the icons */
+  font-size: 1.5rem; /* Adjust icon size */
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: white; /* Color of the icons on hover */
+}
+
+/* Main header styling */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  height: 130px;
+}
+
+/* Style for the logo */
+.header .logo img {
+  height: 90px;
+  max-height: 70px;
+  width: auto;
+}
+
+/* Style for the navigation menu */
+.header nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  /* gap: 5px; */
+}
+
+.header nav ul li {
+  margin: 0 15px;
+}
+
+.header nav ul li a {
+  text-decoration: none;
+  color: black;
+  font-size: 17px;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.header nav ul li a:hover {
+  color: #F6BE00;
+}
+
+/* Style for the search box and icons */
+.search-box {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-left: 60px;
+}
+
+.search-box form {
+  display: flex;
+  align-items: center;
+}
+
+.search-box input {
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  height: 40px;
+  width: 400px;
+}
+
+.search-box button {
+  padding: 5px 10px;
+  font-size: 16px;
+  border: none;
+  background-color: #F6BE00;
+  color: black;
+  border-radius: 10px;
+  margin-left: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  height: 40px;
+}
+
+.search-box .icons {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Space between icons */
+  margin-left: 15px; /* Add space between button and icons */
+}
+
+.search-box .icons i {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.search-box .icons i:hover {
+  color: #F6BE00; /* Change color on hover */
+}
+
+/* Additional CSS for add-to-cart icon */
+.search-box .icons .add-to-cart-icon,
+.search-box .icons .wishlist-icon {
+  color: black; /* Set the default color to black */
+}
+
+/* Cart item count badge */
+.icons a {
+  margin-left: 10px;
+  color: #000; /* Adjust as needed */
+  position: relative;
+}
+
+.icons a span {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #F6BE00; /* Adjust as needed */
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 5px;
+  font-size: 12px;
+}
+
+/* Filtered categories dropdown */
+.filtered-categories {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: white;
+  border: 1px solid #ccc;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-height: 150px; /* Adjust height as needed */
+  overflow-y: auto; /* Add scroll if more items */
+  z-index: 1000;
+}
+
+.filtered-categories li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.filtered-categories li:hover {
+  background: #f0f0f0;
+}
+
+/* Search results container */
+.search-results {
+  padding: 10px;
+  background-color: #f8f9fa;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.search-results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.search-results li {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #f6be00;
+  border-radius: 10px;
+}
+.not-found {
+  position: absolute;
+  top: 100%; /* Position below the search box */
+  left: 0;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: 5px; /* Space between search box and alert */
+  width: 100%; /* Full width of the search box */
+  text-align: center; /* Center the text */
+  z-index: 1000; /* Ensure it's above other elements */
+}
