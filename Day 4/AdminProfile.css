@@ -1,0 +1,25 @@
+.admin-profile-container {
+  text-align: center;
+}
+
+.admin-profile {
+  padding: 20px;
+}
+
+.admin-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.admin-profile h2 {
+  font-size: 18px;
+  margin: 10px 0;
+  color: white;
+  text-align: center;
+}
+
+.admin-profile p {
+  color: white;
+}
