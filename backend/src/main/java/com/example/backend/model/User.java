@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -20,6 +21,15 @@ public class User {
     private int uid;
     private String email;
     private String password;
+    private String roles;
+
+    public String getRoles() {
+        return roles;
+    }
+
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
 
     public User() {
     }
@@ -56,27 +66,29 @@ public class User {
     //user to product
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<Product> product=new ArrayList<>();
 
-    public List<Product> getOrderdata() {
-        return product;
-    }
+    // public List<Product> getOrderdata() {
+    //     return product;
+    // }
 
-    public void setOrderdata(List<Product> product) {
-        this.product= product;
-    }
-
+    // public void setOrderdata(List<Product> product) {
+    //     this.product= product;
+    // }
+//user to wish list
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
+    @JsonIgnore
     private List<AddWish> wishlists = new ArrayList<>();
 
-    public List<AddWish> getWishlists() {
-        return wishlists;
-    }
+    // public List<AddWish> getWishlists() {
+    //     return wishlists;
+    // }
 
-    public void setWishlists(List<AddWish> wishlists) {
-        this.wishlists = wishlists;
-    }
+    // public void setWishlists(List<AddWish> wishlists) {
+    //     this.wishlists = wishlists;
+    // }
     
     
 }

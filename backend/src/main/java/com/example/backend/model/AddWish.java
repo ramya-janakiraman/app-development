@@ -39,7 +39,7 @@ public class AddWish {
         this.categoryType = categoryType;
     }
     
-
+//wish list to user
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_uid")
     @JsonBackReference

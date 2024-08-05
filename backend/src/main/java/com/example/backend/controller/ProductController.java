@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.backend.model.Product;
@@ -11,7 +12,7 @@ import com.example.backend.service.ProductService;
 
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class ProductController {
 
     @Autowired
@@ -19,6 +20,7 @@ public class ProductController {
 
     // Create a new product
     @PostMapping
+    @PreAuthorize( "hasAuthority('ADMIN')")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product createdProduct = productService.create(product);
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
@@ -26,6 +28,8 @@ public class ProductController {
 
     // Get all products
     @GetMapping
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
+   
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAll();
         return new ResponseEntity<>(products, HttpStatus.OK);
@@ -33,6 +37,7 @@ public class ProductController {
 
     // Get a product by ID
     @GetMapping("/{productId}")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public ResponseEntity<Product> getProductById(@PathVariable("productId") int productId) {
         Product product = productService.getById(productId);
         if (product != null) {
@@ -43,7 +48,9 @@ public class ProductController {
     }
 
     // Update a product
-    @PutMapping("/{productId}")
+    @PutMapping("/{productId}")   
+    @PreAuthorize("hasAuthority('ADMIN')")
+
     public ResponseEntity<Product> updateProduct(@PathVariable("productId") int productId, @RequestBody Product product) {
         boolean isUpdated = productService.update(productId, product);
         if (isUpdated) {
@@ -55,6 +62,7 @@ public class ProductController {
 
     // Delete a product
     @DeleteMapping("/{productId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable("productId") int productId) {
         boolean isDeleted = productService.delete(productId);
         if (isDeleted) {
@@ -66,6 +74,7 @@ public class ProductController {
 
     // Get products by category
     @GetMapping("/category/{category}")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public ResponseEntity<List<Product>> getProductsByCategory(@PathVariable("category") String category) {
         List<Product> products = productService.getByCategory(category);
         if (!products.isEmpty()) {
