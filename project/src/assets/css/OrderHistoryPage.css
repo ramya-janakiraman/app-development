@@ -1,0 +1,29 @@
+.order-history-page {
+  padding: 20px;
+  
+}
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #fff9e6;
+}
+
+.delivery-address {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #f6be00; /* Yellow border */
+  border-radius: 5px;
+  background-color: #fff7cc; /* Light yellow background */
+}
+
+.delivery-address h3 {
+  margin-bottom: 10px;
+  color: #d4a017; /* Darker yellow color */
+}
+
+.delivery-address p {
+  margin: 5px 0;
+  color: #b8860b; /* Yellow-brown color */
+}

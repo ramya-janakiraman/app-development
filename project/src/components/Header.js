@@ -60,7 +60,7 @@ const Header = ({ cartItemCount, wishItemCount, search, setSearch }) => {
   };
 
   const handleOrderClick = () => {
-    navigate('/order');
+    navigate('/order-history');
     handleClose();
   };
 

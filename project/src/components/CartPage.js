@@ -224,6 +224,7 @@ const CartPage = () => {
                     border: '2px solid',
                     borderColor: 'black',
                     fontWeight: 'bold',
+                    marginBottom:'20px',
                     '&:hover': {
                       backgroundColor: 'black',
                       color: 'white',

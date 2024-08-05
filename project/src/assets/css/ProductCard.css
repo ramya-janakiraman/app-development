@@ -1,0 +1,73 @@
+.product-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 16px;
+    margin-bottom: 16px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .product-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .product-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    margin-right: 16px;
+  }
+  
+  .product-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .product-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .product-right {
+    text-align: right;
+  }
+  
+  .product-color,
+  .product-price,
+  .product-seller,
+  .product-rating,
+  .delivery-status {
+    margin: 4px 0;
+  }
+  
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  
+  .status-dot.delivered {
+    background-color: green;
+  }
+  
+  .status-dot.shipped {
+    background-color: blue;
+  }
+  
+  .status-dot.processing {
+    background-color: orange;
+  }
+  
+  .status-dot.cancelled {
+    background-color: red;
+  }
+  

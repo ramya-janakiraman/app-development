@@ -11,7 +11,6 @@ import Category from './components/Category';
 import NewArrival from './components/NewArrival';
 import Home from './components/Home';
 import Footer from './components/Footer';
-import Order from './components/Order';
 import Ridetoy from './components/Ridetoy';
 import Dollhouse from './components/Dollhouse';
 import Gun from './components/Gun';
@@ -32,6 +31,12 @@ import AddressPage from './components/AddressPage';
 import CartPage from './components/CartPage';
 import WishlistPage from './components/WishlistPage';
 import Profile from './components/Profile';
+import DeliveryTracking from './components/DeliveryTracking';
+import OrderTrackingPage from './components/OrderTrackingPage';
+import OrderHistoryPage from './components/OrderHistoryPage';
+import ShippedDeliveryPage from './components/ShippedDeliveryPage';
+import CancelledDeliveryPage from './components/CancelledDeliveryPage';
+import ProcessingDeliveryPage from './components/ProcessingDeliveryPage';
 
 const initialProfile = {
   name: 'John Doe',
@@ -71,7 +76,6 @@ function App() {
         <Route path="/category" element={<Category />} />
         <Route path="/newarrival" element={<NewArrival />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path="/order" element={<Order />} />
         <Route path='/ride' element={<Ridetoy/>}/>
         <Route path='/doll' element={<Dollhouse/>}/>
         <Route path='/gun' element={<Gun/>}/>
@@ -90,6 +94,12 @@ function App() {
         <Route path='/address' element={<AddressPage/>}/>
         <Route path='/wish' element={<WishlistPage/>}/>
         <Route path="/profile" element={<Profile />} />
+        <Route path='/delivery' element={<DeliveryTracking/>}/>
+        <Route path="/order-history" element={<OrderHistoryPage />} />
+        <Route path="/order-tracking/:id" element={<OrderTrackingPage />} />
+        <Route path="/shipped-delivery/:id" element={<ShippedDeliveryPage />} />
+        <Route path="/cancelled-delivery/:id" element={<CancelledDeliveryPage />} />
+        <Route path="/processing-delivery/:id" element={<ProcessingDeliveryPage />} />
       </Routes>
       <Footer />
     </Router>
