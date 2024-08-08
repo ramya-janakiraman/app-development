@@ -26,11 +26,13 @@ public class PaymentController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public ResponseEntity<List<Payment>> getAllPayments() {
         return new ResponseEntity<>(paymentService.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{paymentId}")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Payment> getPaymentById(@PathVariable("paymentId") int paymentId) {
         Payment payment = paymentService.getById(paymentId);
         if (payment == null) {
@@ -40,6 +42,7 @@ public class PaymentController {
     }
 
     @PutMapping("/{paymentId}")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Payment> updatePayment(@PathVariable("paymentId") int paymentId, @RequestBody Payment payment) {
         if (paymentService.update(paymentId, payment)) {
             return new ResponseEntity<>(payment, HttpStatus.OK);
@@ -48,6 +51,7 @@ public class PaymentController {
     }
 
     @DeleteMapping("/{paymentId}")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Boolean> deletePayment(@PathVariable("paymentId") int paymentId) {
         if (paymentService.delete(paymentId)) {
             return new ResponseEntity<>(true, HttpStatus.OK);

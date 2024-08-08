@@ -25,17 +25,20 @@ public class BuyController{
     }
 
     @GetMapping("/get/buy")
+    @PreAuthorize("hasAuthority('USER') or hasAuthority('ADMIN')")
     public ResponseEntity<List<Buy>> showInfo() {
         return new ResponseEntity<>(bs.getAll(), HttpStatus.OK);
     }
 
     @GetMapping("/get/buy/{aid}")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Buy> getById(@PathVariable Integer aid) {
         Buy obj = bs.getId(aid);
         return new ResponseEntity<>(obj, HttpStatus.OK);
     }
 
     @PutMapping("/put/{aid}")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Buy> updateBuy(@PathVariable("aid") int aid, @RequestBody Buy b) {
         if (bs.update(aid, b)) {
             return new ResponseEntity<>(b, HttpStatus.OK);
@@ -44,6 +47,7 @@ public class BuyController{
     }
 
     @DeleteMapping("/delete/{aid}")
+    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Boolean> delete(@PathVariable("aid") int aid) {
         if (bs.delete(aid)) {
             return new ResponseEntity<>(true, HttpStatus.OK);
