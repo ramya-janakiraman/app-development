@@ -1,7 +1,5 @@
-import logo from './logo.svg';
-import './App.css';
 import React, { useState } from 'react';
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-router-dom';
 import AboutUs from './components/AboutUs';
 import ContactUs from './components/Contact';
 import Login from './components/Login';
@@ -55,56 +53,91 @@ function App() {
     setProfile(updatedProfile);
   };
 
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          cartItemCount={cartItemCount}
+          search={search}
+          setSearch={setSearch}
+          isAdmin={isAdmin}
+          setIsAdmin={setIsAdmin} // Pass setIsAdmin here
+          profile={profile}
+          handleProfileUpdate={handleProfileUpdate}
+        />
+      </Router>
+    </AuthProvider>
+  );
+}
+
+function AppContent({
+  isLoggedIn,
+  setIsLoggedIn,
+  cartItemCount,
+  search,
+  setSearch,
+  isAdmin,
+  setIsAdmin, // Add setIsAdmin to the props
+  profile,
+  handleProfileUpdate
+}) {
+  const location = useLocation();
+
+  const hideHeaderFooterRoutes = ['/admin', '/admin-profile', '/edit-profile'];
+
+  const shouldHideHeaderFooter = hideHeaderFooterRoutes.includes(location.pathname);
 
   return (
-    
-    <AuthProvider>
-    <Router>
-      <Header
-        isLoggedIn={isLoggedIn}
-        setIsLoggedIn={setIsLoggedIn}
-        cartItemCount={cartItemCount}
-        search={search}
-        setSearch={setSearch}
-      />
+    <>
+      {!shouldHideHeaderFooter && (
+        <Header
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          cartItemCount={cartItemCount}
+          search={search}
+          setSearch={setSearch}
+        />
+      )}
+
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin}/>} />
+        <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setIsAdmin={setIsAdmin} />} /> {/* Pass setIsAdmin to Login */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/category" element={<Category />} />
         <Route path="/newarrival" element={<NewArrival />} />
         <Route path="/cart" element={<CartPage />} />
-        <Route path='/ride' element={<Ridetoy/>}/>
-        <Route path='/doll' element={<Dollhouse/>}/>
-        <Route path='/gun' element={<Gun/>}/>
-        <Route path='/baby' element={<Babywalker/>}/>
-        <Route path='/edu' element={<Educational/>}/>
-        <Route path='/music' element={<Music/>}/>
-        <Route path='/threeage' element={<Threeage/>}/>
-        <Route path='/eightage' element={<Eightage/>}/>
-        <Route path='/lastage' element={<Lastage/>}/>
-        <Route path='/payment' element={<Payment/>}/>
-        <Route path='/success' element={<PaymentSuccess/>}/>
-        <Route path='/feedback' element={<Feedback/>}/>
-        <Route path='/admin' element={<AdminDashboard/>}/>
-        <Route path='/admin-profile' element={<AdminProfile/>}/>
-        <Route path='/edit-profile' element={<AdminProfileEdit/>}/>
-        <Route path='/address' element={<AddressPage/>}/>
-        <Route path='/wish' element={<WishlistPage/>}/>
+        <Route path="/ride" element={<Ridetoy />} />
+        <Route path="/doll" element={<Dollhouse />} />
+        <Route path="/gun" element={<Gun />} />
+        <Route path="/baby" element={<Babywalker />} />
+        <Route path="/edu" element={<Educational />} />
+        <Route path="/music" element={<Music />} />
+        <Route path="/threeage" element={<Threeage />} />
+        <Route path="/eightage" element={<Eightage />} />
+        <Route path="/lastage" element={<Lastage />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/success" element={<PaymentSuccess />} />
+        <Route path="/feedback" element={<Feedback />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin-profile" element={<AdminProfile />} />
+        <Route path="/edit-profile" element={<AdminProfileEdit />} />
+        <Route path="/address" element={<AddressPage />} />
+        <Route path="/wish" element={<WishlistPage />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path='/delivery' element={<DeliveryTracking/>}/>
+        <Route path="/delivery" element={<DeliveryTracking />} />
         <Route path="/order-history" element={<OrderHistoryPage />} />
         <Route path="/order-tracking/:id" element={<OrderTrackingPage />} />
         <Route path="/shipped-delivery/:id" element={<ShippedDeliveryPage />} />
         <Route path="/cancelled-delivery/:id" element={<CancelledDeliveryPage />} />
         <Route path="/processing-delivery/:id" element={<ProcessingDeliveryPage />} />
       </Routes>
-      <Footer />
-    </Router>
-    </AuthProvider>
-  
+
+      {!shouldHideHeaderFooter && <Footer />}
+    </>
   );
 }
 

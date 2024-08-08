@@ -70,8 +70,9 @@ const Header = ({ cartItemCount, wishItemCount, search, setSearch }) => {
   };
 
   const handleLogoutConfirm = () => {
+    localStorage.removeItem("token");
     setIsLoggedIn(false);
-    navigate('/');
+    navigate('/login');
     setOpenDialog(false);
   };
 

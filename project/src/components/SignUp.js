@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function SignUp() {
+  const apiurl="http://127.0.0.1:8080/api/users/createUser";
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,7 +17,6 @@ function SignUp() {
     password: "",
     confirmPassword: ""
   });
-
   const navigate = useNavigate(); // Hook for navigation
 
   const handleChange = (event) => {
@@ -24,7 +25,7 @@ function SignUp() {
     setError({ ...error, [name]: "" });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const formErrors = {};
 
@@ -44,6 +45,22 @@ function SignUp() {
     }
 
     setError(formErrors);
+
+    const newData= await axios.post(apiurl,{
+      uid:0,
+      name:formData.name,
+      email:formData.email,
+      password:formData.password,
+      roles:"USER",
+    })
+    .then((response)=>{
+      console.log(response);
+    })
+    .catch((error)=>{
+      console.error(error);
+    });
+      alert("user registered successfully");
+      navigate('/login');
     if (Object.keys(formErrors).length === 0) {
       // Assuming successful signup
       navigate('/login'); // Redirect to login page

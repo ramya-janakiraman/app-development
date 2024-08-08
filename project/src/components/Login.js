@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios'; // Import axios
 import '../assets/css/Login.css';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -27,7 +28,7 @@ function Login() {
     setError({ ...error, [name]: '' });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formErrors = {};
 
@@ -39,29 +40,30 @@ function Login() {
 
     if (formData.password.trim() === '') {
       formErrors.password = 'Enter Password';
-    } else if (formData.password.length < 6) {
-      formErrors.password = 'Password must be at least 6 characters long';
+    } else if (formData.password.length < 5) {
+      formErrors.password = 'Password must be at least 5 characters long';
     }
 
     if (Object.keys(formErrors).length > 0) {
       setError(formErrors);
     } else {
-      const hardcodedEmail = 'j.ramya03.2005@gmail.com';
-      const hardcodedPassword = 'password';
-      const adminEmail = 'admin@gmail.com';
-      const adminPassword = 'adminpass';
-
-      if (formData.email === hardcodedEmail && formData.password === hardcodedPassword) {
-        alert('Login successful!');
+      try {
+        const response = await axios.post("http://127.0.0.1:8080/api/auth/authenticate", formData);
+        console.log(response);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("role", response.data.role);
+        const role = localStorage.getItem("role");
         setIsLoggedIn(true);
-        setOpenDialog(true);
-        setOpenCategoriesDialog(true);
-      } else if (formData.email === adminEmail && formData.password === adminPassword) {
-        alert('Admin login successful!');
-        setIsAdmin(true);
-        setIsLoggedIn(true);
-        navigate('/admin');
-      } else {
+        
+        if (role === "ADMIN") {
+          setIsAdmin(true);
+          navigate("/admin");
+        } else {
+          setOpenDialog(true);
+          setOpenCategoriesDialog(true);
+        }
+      } catch (error) {
+        console.error(error);
         setError({ email: 'Invalid email or password', password: '' });
       }
     }
