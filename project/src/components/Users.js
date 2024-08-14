@@ -1,38 +1,25 @@
-// Users.js
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../assets/css/Users.css';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
 
-  // Simulate fetching user data from an API
   useEffect(() => {
-    // Sample data to simulate API response
-    const sampleUsers = [
-      {
-        id: '1',
-        name: 'Vijay',
-        email: 'vijay@example.com',
-        role: 'Admin',
-      },
-      {
-        id: '2',
-        name: 'Dhana',
-        email: 'dhana@example.com',
-        role: 'User',
-      },
-      {
-        id: '3',
-        name: 'Priya',
-        email: 'priya@example.com',
-        role: 'Moderator',
-      },
-    ];
-
-    // Simulate API call delay
-    setTimeout(() => {
-      setUsers(sampleUsers);
-    }, 1000);
+    // Fetch users from the backend
+    axios.get('http://127.0.0.1:8080/api/users/readUsers', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}` // Add authentication token if needed
+      }
+    })
+    .then(response => {
+      // Filter users to include only those with the "USER" role
+      const userRoles = response.data.filter(user => user.roles === 'USER');
+      setUsers(userRoles);
+    })
+    .catch(error => {
+      console.error('There was an error fetching the users!', error);
+    });
   }, []);
 
   return (
@@ -49,11 +36,11 @@ const Users = () => {
         </thead>
         <tbody>
           {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
+            <tr key={user.uid}>
+              <td>{user.uid}</td>
               <td>{user.name}</td>
               <td>{user.email}</td>
-              <td>{user.role}</td>
+              <td>{user.roles}</td>
             </tr>
           ))}
         </tbody>

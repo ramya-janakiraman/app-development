@@ -25,6 +25,10 @@ public class BuyService {
         return buyRepo.findById(aid).orElse(null);
     }
 
+    public List<Buy> getByEmail(String email) {
+        return buyRepo.findByEmail(email);
+    }
+
     public boolean update(int aid, Buy buy) {
         if (this.getId(aid) == null) {
             return false;

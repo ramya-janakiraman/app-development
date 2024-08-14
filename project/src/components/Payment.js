@@ -1,208 +1,176 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/css/Payment.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 
 const Payment = () => {
-  const [paymentDetails, setPaymentDetails] = useState({
+  const apiurl = 'http://127.0.0.1:8080/api/payment';
+  const [formData, setFormData] = useState({
+    name: '',
     cardNumber: '',
-    cardName: '',
-    expiryDate: '',
     cvv: '',
-    onlinePaymentDetails: '',
-    bankAccount: '',
-    paymentMethod: 'creditCard' // Default payment method
+    expiryDate: '',
   });
-  const [errors, setErrors] = useState({});
+
+  const [error, setError] = useState({
+    name: '',
+    cardNumber: '',
+    cvv: '',
+    expiryDate: '',
+    general: ''
+  });
+
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setPaymentDetails({ ...paymentDetails, [name]: value });
-    setErrors({ ...errors, [name]: "" });
+    setFormData({ ...formData, [name]: value });
+    setError({ ...error, [name]: '', general: '' });
   };
 
-  const validateForm = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const formErrors = {};
-    if (paymentDetails.paymentMethod === 'creditCard') {
-      if (!paymentDetails.cardNumber) formErrors.cardNumber = "Card number is required";
-      if (!paymentDetails.cardName) formErrors.cardName = "Cardholder name is required";
-      if (!paymentDetails.expiryDate) formErrors.expiryDate = "Expiry date is required";
-      if (!paymentDetails.cvv) formErrors.cvv = "CVV is required";
-    } else if (paymentDetails.paymentMethod === 'onlinePayment') {
-      if (!paymentDetails.onlinePaymentDetails) formErrors.onlinePaymentDetails = "UPI ID is required";
-    } else if (paymentDetails.paymentMethod === 'bankTransfer') {
-      if (!paymentDetails.bankAccount) formErrors.bankAccount = "Bank account number is required";
+
+    if (formData.name.trim() === '') {
+      formErrors.name = 'Enter Name on Card';
+    }
+    if (formData.cardNumber.trim() === '' || !/^\d{16}$/.test(formData.cardNumber)) {
+      formErrors.cardNumber = 'Enter a valid 16-digit Card Number';
+    }
+    if (formData.cvv.trim() === '' || !/^\d{3,4}$/.test(formData.cvv)) {
+      formErrors.cvv = 'Enter a valid CVV (3 or 4 digits)';
+    }
+    if (formData.expiryDate.trim() === '' || !/^(0[1-9]|1[0-2])\/\d{4}$/.test(formData.expiryDate)) {
+      formErrors.expiryDate = 'Enter a valid Expiry Date (MM/YYYY)';
     }
 
-    return formErrors;
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const formErrors = validateForm();
-
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors);
-    } else {
-      if (
-        paymentDetails.cardName === 'ramya' &&
-        paymentDetails.cardNumber === '1234567890' &&
-        paymentDetails.cvv === '123' &&
-        paymentDetails.expiryDate === '04/2024'
-      ) {
-        navigate("/success");
-      } else if (paymentDetails.paymentMethod === 'creditCard') {
-        if (paymentDetails.cardName !== 'ramya') {
-          alert('Payment failed. Please check your card name and try again.');
-        } else if (paymentDetails.cardNumber !== '1234567890') {
-          alert('Payment failed. Please check your card number and try again.');
-        } else if (paymentDetails.cvv !== '123') {
-          alert('Payment failed. Please check your CVV and try again.');
-        } else if (paymentDetails.expiryDate !== '04/2024') {
-          alert('Payment failed. Please check your expiry date and try again.');
+      setError(formErrors);
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        apiurl,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          }
         }
-      } else if (paymentDetails.paymentMethod === 'onlinePayment') {
-        if (paymentDetails.onlinePaymentDetails !== 'ramya@0314') { // Replace 'valid_upi_id' with actual validation logic
-          alert('Payment failed. Please check your UPI ID and try again.');
-        } else {
-          
-          navigate("/success");
-        }
-      } else if (paymentDetails.paymentMethod === 'bankTransfer') {
-        if (paymentDetails.bankAccount !== '1234567890') { // Replace 'valid_account_number' with actual validation logic
-          alert('Payment failed. Please check your bank account number and try again.');
-        } else {
-          navigate("/success");
-        }
+      );
+
+      if (response.status === 201 || response.status === 200) {
+        alert('Your payment was successfully submitted');
+        navigate('/success');
       }
+    } catch (error) {
+      console.error('Payment Submission Error:', error);
+      const errorMessage =
+        error.response?.status === 401
+          ? 'Unauthorized. Please check your details and try again.'
+          : 'Payment submission failed. Please try again later.';
+      setError((prevError) => ({ ...prevError, general: errorMessage }));
     }
   };
 
   return (
-    <div className="payment-container">
-      <h2>Payment Details</h2>
-      <form onSubmit={handleSubmit} className="payment-form">
-        <div className="form-group">
-          <label>Payment Method</label>
-          <div className="payment-methods">
-            <label>
-              <input
-                type="radio"
-                name="paymentMethod"
-                value="creditCard"
-                checked={paymentDetails.paymentMethod === 'creditCard'}
-                onChange={handleChange}
-              />
-              Credit Card
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="paymentMethod"
-                value="onlinePayment"
-                checked={paymentDetails.paymentMethod === 'onlinePayment'}
-                onChange={handleChange}
-              />
-              Online Payment
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="paymentMethod"
-                value="bankTransfer"
-                checked={paymentDetails.paymentMethod === 'bankTransfer'}
-                onChange={handleChange}
-              />
-              Bank Transfer
-            </label>
-          </div>
-        </div>
+    <Container className="payment-container my-5">
+      <Row className="justify-content-center">
+        <Col md={8} lg={6}>
+          <div className="payment-form-container p-4 border rounded shadow-sm">
+            <h2 className="text-center mb-4">Payment</h2>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="name" className="mb-3">
+                <Form.Label>Name on Card</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter Name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  isInvalid={!!error.name}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {error.name}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-        {paymentDetails.paymentMethod === 'creditCard' && (
-          <>
-            <div className="form-group">
-              <label htmlFor="cardNumber">Card Number</label>
-              <input
-                type="text"
-                id="cardNumber"
-                name="cardNumber"
-                value={paymentDetails.cardNumber}
-                onChange={handleChange}
-                className={errors.cardNumber ? 'error' : ''}
-              />
-              {errors.cardNumber && <p className="error-message">{errors.cardNumber}</p>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="cardName">Cardholder Name</label>
-              <input
-                type="text"
-                id="cardName"
-                name="cardName"
-                value={paymentDetails.cardName}
-                onChange={handleChange}
-                className={errors.cardName ? 'error' : ''}
-              />
-              {errors.cardName && <p className="error-message">{errors.cardName}</p>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="expiryDate">Expiry Date</label>
-              <input
-                type="text"
-                id="expiryDate"
-                name="expiryDate"
-                value={paymentDetails.expiryDate}
-                onChange={handleChange}
-                className={errors.expiryDate ? 'error' : ''}
-              />
-              {errors.expiryDate && <p className="error-message">{errors.expiryDate}</p>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="cvv">CVV</label>
-              <input
-                type="text"
-                id="cvv"
-                name="cvv"
-                value={paymentDetails.cvv}
-                onChange={handleChange}
-                className={errors.cvv ? 'error' : ''}
-              />
-              {errors.cvv && <p className="error-message">{errors.cvv}</p>}
-            </div>
-          </>
-        )}
+              <Form.Group controlId="cardNumber" className="mb-3">
+                <Form.Label>Card Number</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="0000-0000-0000-0000"
+                  name="cardNumber"
+                  value={formData.cardNumber}
+                  onChange={handleChange}
+                  isInvalid={!!error.cardNumber}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {error.cardNumber}
+                </Form.Control.Feedback>
+              </Form.Group>
 
-        {paymentDetails.paymentMethod === 'onlinePayment' && (
-          <div className="form-group">
-            <label htmlFor="onlinePaymentDetails">UPI ID</label>
-            <input
-              type="text"
-              id="onlinePaymentDetails"
-              name="onlinePaymentDetails"
-              value={paymentDetails.onlinePaymentDetails}
-              onChange={handleChange}
-              className={errors.onlinePaymentDetails ? 'error' : ''}
-            />
-            {errors.onlinePaymentDetails && <p className="error-message">{errors.onlinePaymentDetails}</p>}
-          </div>
-        )}
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group controlId="cvv">
+                    <Form.Label>CVV</Form.Label>
+                    <Form.Control
+                      type="password"
+                      placeholder="CVV"
+                      name="cvv"
+                      value={formData.cvv}
+                      onChange={handleChange}
+                      isInvalid={!!error.cvv}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {error.cvv}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="expiryDate">
+                    <Form.Label>Expiry Date</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="MM/YYYY"
+                      name="expiryDate"
+                      value={formData.expiryDate}
+                      onChange={handleChange}
+                      isInvalid={!!error.expiryDate}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {error.expiryDate}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
 
-        {paymentDetails.paymentMethod === 'bankTransfer' && (
-          <div className="form-group">
-            <label htmlFor="bankAccount">Bank Account Number</label>
-            <input
-              type="text"
-              id="bankAccount"
-              name="bankAccount"
-              value={paymentDetails.bankAccount}
-              onChange={handleChange}
-              className={errors.bankAccount ? 'error' : ''}
-            />
-            {errors.bankAccount && <p className="error-message">{errors.bankAccount}</p>}
+              {error.general && (
+                <Alert variant="danger">
+                  {error.general}
+                </Alert>
+              )}
+
+              <Button type="submit" variant="warning" className="w-100">
+                Pay Now
+              </Button>
+            </Form>
           </div>
-        )}
-        <button type="submit" className="payment-button">Pay Now</button>
-      </form>
-    </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

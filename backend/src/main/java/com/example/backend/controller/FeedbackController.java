@@ -28,7 +28,7 @@ import com.example.backend.service.FeedbackService;
 public class FeedbackController {
     @Autowired
     FeedbackService fs;
-    @PostMapping("/post/feedback")
+    @PostMapping
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Feedback>addelements(@RequestBody Feedback f)
     {

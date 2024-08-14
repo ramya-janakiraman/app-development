@@ -33,15 +33,7 @@ const ProfileForm = ({ userData, onSave, onCancel }) => {
           onChange={handleChange} 
         />
       </div>
-      <div className="form-group">
-        <label>Mobile:</label>
-        <input 
-          type="text" 
-          name="mobile" 
-          value={formData.mobile} 
-          onChange={handleChange} 
-        />
-      </div>
+      
      
       <button type="submit">Save</button>
       <button type="button" onClick={onCancel}>Cancel</button>

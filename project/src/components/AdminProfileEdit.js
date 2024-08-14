@@ -1,9 +1,11 @@
-// AdminProfileEdit.js
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import '../assets/css/AdminProfileEdit.css';
 
 const AdminProfileEdit = ({ profile, onProfileUpdate }) => {
   const [updatedProfile, setUpdatedProfile] = useState(profile);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -13,21 +15,44 @@ const AdminProfileEdit = ({ profile, onProfileUpdate }) => {
     });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setUpdatedProfile({
-        ...updatedProfile,
-        profilePicture: reader.result,
-      });
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onProfileUpdate(updatedProfile);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found. Please log in.");
+      }
+
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const email = updatedProfile.email;
+      if (!email) {
+        throw new Error("Email is required to update the profile.");
+      }
+
+      const response = await axios.put(
+        `http://127.0.0.1:8080/api/users/updateUser/${email}`,
+        updatedProfile,
+        config
+      );
+
+      if (response.status === 200) {
+        onProfileUpdate(updatedProfile);
+        navigate("/admin-profile");
+      } else {
+        throw new Error(`Failed to update profile: ${response.status}`);
+      }
+
+    } catch (error) {
+      console.error("Error updating profile:", error.response || error);
+      alert(`Failed to update profile: ${error.message}`);
+    }
   };
 
   return (
@@ -54,21 +79,6 @@ const AdminProfileEdit = ({ profile, onProfileUpdate }) => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="profilePicture">Profile Picture:</label>
-          <input
-            type="file"
-            id="profilePicture"
-            name="profilePicture"
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </div>
-        {updatedProfile.profilePicture && (
-          <div className="profile-picture-preview">
-            <img src={updatedProfile.profilePicture} alt="Profile Preview" />
-          </div>
-        )}
         <button type="submit">Save Changes</button>
       </form>
     </div>

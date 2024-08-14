@@ -52,11 +52,14 @@ function Login() {
         console.log(response);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("role", response.data.role);
+        localStorage.setItem("email", formData.email); // Added line
+      localStorage.setItem("password", formData.password); // Added line
         const role = localStorage.getItem("role");
         setIsLoggedIn(true);
         
         if (role === "ADMIN") {
           setIsAdmin(true);
+          alert("Admin login successfully");
           navigate("/admin");
         } else {
           setOpenDialog(true);
@@ -80,7 +83,7 @@ function Login() {
 
   const handleSuccessfulLogin = () => {
     setOpenDialog(false);
-    navigate(redirectPath || '/category');
+    navigate(redirectPath || '/profile');
     setRedirectPath(null); // Clear the redirect path after using it
   };
 
@@ -137,6 +140,7 @@ function Login() {
             backgroundColor: 'rgba(255, 255, 255, 0.8)',
             boxShadow: 'none',
             borderRadius: '10px',
+            width:'400px'
           },
         }}
       >

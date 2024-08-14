@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Card, CardContent, CardMedia, Grid, Typography, IconButton, Rating } from "@mui/material";
-import { Link, useNavigate } from 'react-router-dom';
-import { Delete } from '@mui/icons-material';
+import {
+  Box, Button, CardMedia, Typography, Rating, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
+} from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import '../assets/css/CartPage.css';  // Ensure this file exists and is properly imported
+import axios from 'axios';
+import '../assets/css/CartPage.css';
 
 const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -11,16 +13,33 @@ const CartPage = () => {
   const { isLoggedIn, setRedirectPath } = useAuth();
 
   useEffect(() => {
-    // Retrieve cart items from local storage
     const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
-    // Initialize quantity for each item if not present
     const initializedCart = savedCart.map(item => ({ ...item, quantity: item.quantity || 1 }));
     setCartItems(initializedCart);
+
+    axios.get('http://127.0.0.1:8080/api/products')
+      .then(response => {
+        // Include product details to calculate total price
+        const products = response.data;
+        const cartWithProductDetails = initializedCart.map(cartItem => {
+          const product = products.find(p => p.id === cartItem.productId);
+          return { ...cartItem, productPrice: product.price };
+        });
+        setCartItems(cartWithProductDetails);
+      })
+      .catch(error => {
+        console.error("There was an error fetching the products!", error);
+      });
   }, []);
 
   const handleCheckout = () => {
-    // Navigate to checkout page
-    navigate('/checkout');
+    if (isLoggedIn) {
+      navigate('/checkout');
+    } else {
+      alert('Please login to proceed to checkout.');
+      setRedirectPath('/checkout');
+      navigate('/login');
+    }
   };
 
   const handleDeleteClick = (index) => {
@@ -32,7 +51,7 @@ const CartPage = () => {
   const handleQuantityChange = (index, change) => {
     const updatedCartItems = [...cartItems];
     const item = updatedCartItems[index];
-    const newQuantity = Math.max(1, item.quantity + change); // Ensure quantity is at least 1
+    const newQuantity = Math.max(1, item.quantity + change);
     item.quantity = newQuantity;
     setCartItems(updatedCartItems);
     localStorage.setItem('cart', JSON.stringify(updatedCartItems));
@@ -100,145 +119,122 @@ const CartPage = () => {
           </>
         ) : (
           <>
-            <Grid container spacing={2} sx={{ padding: '50px' }}>
-              {cartItems.map((item, index) => (
-                <Grid item xs={12} md={3} key={index}>
-                  <Card sx={{ 
-                    maxWidth: 300, 
-                    position: 'relative',
-                    margin: '10px',
-                    boxShadow: 'none',
-                  }}>
-                    <Button
-                      sx={{
-                        backgroundColor: '#F6BE00',
-                        fontWeight: 'bold',
-                        color: 'black',
-                        padding: '10px',
-                        fontFamily: 'sans-serif',
-                        fontSize: 'medium',
-                        width: '100px',
-                        '&:hover': {
-                          backgroundColor: '#F6BE00',
-                          color: 'black',
-                        },
-                      }}
-                    >
-                      {index === 0
-                        ? '20% OFF'
-                        : index === 1
-                        ? '25% OFF'
-                        : index === 2
-                        ? '30% OFF'
-                        : index === 3
-                        ? '40% OFF'
-                        : '50% OFF'}
-                    </Button>
-                    <CardMedia
-                      sx={{ height: 200, marginTop: '10px' }}
-                      image={item.image || 'https://via.placeholder.com/200'} // Fallback image if item.image is missing
-                      title={item.title}
-                    />
-                    <IconButton
-                      sx={{
-                        position: 'absolute',
-                        top: 10,
-                        right: 10,
-                        borderColor: '#F6BE00',
-                        color: '#F6BE00',
-                        '&:hover': {
-                          color: '#FFC107',
-                        },
-                      }}
-                      onClick={() => handleDeleteClick(index)}
-                    >
-                      <Delete />
-                    </IconButton>
-                    <CardContent className="cart-content-custom">
-                      <Typography gutterBottom variant="h6" sx={{ fontSize: '17px' }}>
-                        {item.title}
-                      </Typography>
-                      <Typography variant="body2" className="price" style={{ fontWeight: 'bold' }}>
-                        {item.price}
-                      </Typography>
-                      <Typography variant="body2" className="old-price" style={{ color: 'red', fontWeight: 'bold', textDecoration: 'line-through' }}>
-                        {item.oldPrice}
-                      </Typography>
-                      <Box sx={{ display: 'flex', alignItems: 'center', marginTop: '10px' }}>
-                        <Button
-                          variant="outlined"
-                          sx={{ marginRight: '10px', marginLeft: '28px' }}
-                          onClick={() => handleQuantityChange(index, -1)}
-                        >
-                          -
-                        </Button>
-                        <Typography variant="body2" sx={{ marginRight: '10px' }}>
-                          Quantity: {item.quantity}
+            <TableContainer component={Paper} sx={{ marginTop: '20px', marginBottom: '20px', maxWidth: '90%' }}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">Product</TableCell>
+                    <TableCell align="center">Price</TableCell>
+                    <TableCell align="center">Quantity</TableCell>
+                    <TableCell align="center">Total</TableCell>
+                    <TableCell align="center">Rating</TableCell>
+                    <TableCell align="center">Action</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {cartItems.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell align="center">
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <CardMedia
+                            sx={{ width: 150, height: 150, marginRight: '20px' }}
+                            image={item.imageUrl}
+                            title={item.productName}
+                          />
+                          <Typography variant="body1">{item.productName}</Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography variant="body2" style={{ fontWeight: 'bold' }}>
+                          Rs.{item.productPrice}.00
                         </Typography>
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleQuantityChange(index, 1)}
-                        >
-                          +
-                        </Button>
-                      </Box>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: '#F6BE00',
-                          color: 'black',
-                          marginTop: '10px',
-                          fontWeight: 'bold',
-                          width: '100%',
-                          '&:hover': {
-                            backgroundColor: '#FFC107',
-                            color: 'white',
-                          },
-                        }}
-                        onClick={() => handleBuyNow(index)}
-                      >
-                        Buy Now
-                      </Button>
-                      <Rating
-                        name={`product-rating-${index}`}
-                        value={item.rating || 4} // Default to 4 if item.rating is missing
-                        precision={0.5}
-                        readOnly
-                      />
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                          <Button variant="outlined" onClick={() => handleQuantityChange(index, -1)}>-</Button>
+                          <Typography variant="body2" sx={{ margin: '0 10px' }}>{item.quantity}</Typography>
+                          <Button variant="outlined" onClick={() => handleQuantityChange(index, 1)}>+</Button>
+                        </Box>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Typography variant="body2" style={{ fontWeight: 'bold' }}>
+                          Rs.{item.quantity * item.productPrice}.00
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Rating
+                          name={`product-rating-${index}`}
+                          value={item.rating || 4}
+                          precision={0.5}
+                          readOnly
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Box sx={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                            <Button
+                              variant="contained"
+                              sx={{
+                                backgroundColor:'#F6BE00',
+                                color: 'white',
+                                fontWeight: 'bold',
+                                '&:hover': {
+                                  backgroundColor: '#FFC107',
+                                  color: 'black',
+                                },
+                              }}
+                              onClick={() => handleBuyNow(index)}
+                            >
+                              Buy Now
+                            </Button>
+                          <Button
+                            variant="contained"
+                            sx={{
+                              backgroundColor: '#d32f2f', // Red color for delete button
+                              color: 'white',
+                              fontWeight: 'bold',
+                              '&:hover': {
+                                backgroundColor: '#b71c1c',
+                                color: 'white',
+                              },
+                            }}
+                            onClick={() => handleDeleteClick(index)}
+                          >
+                            Delete
+                          </Button>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
             <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
-              <Link to='/'>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    backgroundColor: 'white',
-                    color: 'black',
-                    padding: '10px',
-                    letterSpacing: '3px',
-                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-                    border: '2px solid',
-                    borderColor: 'black',
-                    fontWeight: 'bold',
-                    marginBottom:'20px',
-                    '&:hover': {
-                      backgroundColor: 'black',
-                      color: 'white',
-                    },
-                    '&:active': {
-                      backgroundColor: 'gray',
-                      color: 'white',
-                    },
-                  }}
-                  onClick={handleCheckout}
-                >
-                  Continue Shopping
-                </Button>
-              </Link>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  backgroundColor: 'white',
+                  color: 'black',
+                  padding: '10px',
+                  letterSpacing: '3px',
+                  boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+                  border: '2px solid',
+                  borderColor: 'black',
+                  fontWeight: 'bold',
+                  margin:'30px',
+                  '&:hover': {
+                    backgroundColor: 'black',
+                    color: 'white',
+                  },
+                  '&:active': {
+                    backgroundColor: 'gray',
+                    color: 'white',
+                  },
+                }}
+                onClick={handleCheckout}
+              >
+                Proceed to Checkout
+              </Button>
             </Box>
           </>
         )}

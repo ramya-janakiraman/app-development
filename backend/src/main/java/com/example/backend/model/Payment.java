@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -12,6 +14,7 @@ import jakarta.persistence.OneToOne;
 @Entity
 public class Payment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int paymentId;
     private String name;
     private String cardNumber;
@@ -69,31 +72,8 @@ public class Payment {
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
     }
-    //payment to buy
-    @OneToOne
-    @JsonBackReference
-    @JoinColumn(name = "aid", referencedColumnName = "aid", nullable = false)
-    private Buy buy;
-
-public Buy getBuy() {
-    return buy;
-}
-
-public void setBuy(Buy buy) {
-    this.buy=buy;
-}
-//payment to feedback
-@OneToOne(mappedBy = "payment",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    @JsonIgnore
-    private Feedback feedback;
-
    
-//payment to orders
-    @OneToOne(mappedBy = "payment",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    @JsonIgnore
-    private Orders orders;
+
 
    
 }

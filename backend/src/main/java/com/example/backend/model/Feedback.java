@@ -4,6 +4,8 @@ package com.example.backend.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -11,6 +13,7 @@ import jakarta.persistence.OneToOne;
 @Entity
 public class Feedback {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int fid;
     private String rating;
     private String description;
@@ -48,16 +51,5 @@ public class Feedback {
         this.description=description;
     }
     //feedback to payment
-    @OneToOne
-    @JsonBackReference
-    @JoinColumn(name = "payment_id", referencedColumnName = "paymentId", nullable = false)
-    private Payment payment;
-
-public Payment getPayment() {
-    return payment;
-}
-
-public void setPayment(Payment payment) {
-    this.payment=payment;
-}
+   
 }

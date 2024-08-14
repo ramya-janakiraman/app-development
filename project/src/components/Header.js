@@ -284,6 +284,7 @@ const Header = ({ cartItemCount, wishItemCount, search, setSearch }) => {
             backgroundColor: 'rgba(255, 255, 255, 0.8)',
             boxShadow: 'none',
             borderRadius: '10px',
+            width:'400px'
           },
         }}
       >

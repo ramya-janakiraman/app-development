@@ -56,13 +56,16 @@ public class SecurityConfig {
                                                 .permitAll())
                                 .authorizeHttpRequests(requests -> requests
                                                 .requestMatchers(
+                                                                "/api/users/updateUser/**").hasAnyAuthority("USER", "ADMIN")
+                                                .requestMatchers(
                                                                 "/api/users/**",
                                                                 "/api/auth/**",
                                                                 "/api/products/**",
                                                                 "/api/buy/**",
                                                                 "/api/payment/**",
                                                                 "/api/order/**",
-                                                                "/api/feedback/**")
+                                                                "/api/feedback/**",
+                                                                "/api/addwish/**")
                                                 .authenticated())
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

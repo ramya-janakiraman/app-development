@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 function SignUp() {
-  const apiurl="http://127.0.0.1:8080/api/users/createUser";
+  const apiurl = "http://127.0.0.1:8080/api/users/createUser";
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -25,7 +25,7 @@ function SignUp() {
     setError({ ...error, [name]: "" });
   };
 
-  const handleSubmit = async(event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formErrors = {};
 
@@ -46,24 +46,34 @@ function SignUp() {
 
     setError(formErrors);
 
-    const newData= await axios.post(apiurl,{
-      uid:0,
-      name:formData.name,
-      email:formData.email,
-      password:formData.password,
-      roles:"USER",
-    })
-    .then((response)=>{
-      console.log(response);
-    })
-    .catch((error)=>{
-      console.error(error);
-    });
-      alert("user registered successfully");
-      navigate('/login');
     if (Object.keys(formErrors).length === 0) {
-      // Assuming successful signup
-      navigate('/login'); // Redirect to login page
+      try {
+        const response = await axios.post(apiurl, {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          roles: "USER", // Changed to USER role
+        });
+
+        if (response.status === 201) { // Assuming 201 Created status for successful signup
+          const { uid } = response.data; // Get uid from response
+
+          // Save uid, email, and password to localStorage
+          localStorage.setItem("uid", uid);
+          localStorage.setItem("email", formData.email);
+          localStorage.setItem("password", formData.password);
+
+          alert("User registered successfully");
+          navigate('/login');
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 409) { // Handle duplicate user error
+          alert("User already exists. Please log in.");
+        } else {
+          console.error(error);
+          alert("An error occurred during registration. Please try again later.");
+        }
+      }
     }
   };
 

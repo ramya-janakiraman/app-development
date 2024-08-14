@@ -22,6 +22,7 @@ public class User {
     @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uid;
+    private String name;
     private String email;
     private String password;
     private String roles;
@@ -37,10 +38,11 @@ public class User {
     public User() {
     }
 
-    public User(int uid, String email, String password) {
+    public User(int uid, String email, String password,String name) {
         this.uid = uid;
         this.email = email;
         this.password = password;
+        this.name=name;
     }
 
     public int getUid() {
@@ -66,32 +68,14 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    //user to product
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @JsonIgnore
-    private List<Product> product=new ArrayList<>();
-
-    // public List<Product> getOrderdata() {
-    //     return product;
-    // }
-
-    // public void setOrderdata(List<Product> product) {
-    //     this.product= product;
-    // }
-//user to wish list
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @JsonIgnore
-    private List<AddWish> wishlists = new ArrayList<>();
-
-    // public List<AddWish> getWishlists() {
-    //     return wishlists;
-    // }
-
-    // public void setWishlists(List<AddWish> wishlists) {
-    //     this.wishlists = wishlists;
-    // }
     
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     
 }

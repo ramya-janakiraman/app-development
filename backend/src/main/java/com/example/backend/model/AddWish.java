@@ -1,25 +1,27 @@
 package com.example.backend.model;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-
 @Entity
 public class AddWish {
     @Id
     private int cid;
     private String categoryType;
+
+
+
+@ManyToOne
+@JoinColumn(name = "product_id")
+ @JsonManagedReference
+private Product product;
+@JsonIgnore
+
+
     public AddWish() {
     }
     public AddWish(int cid, String categoryType) {
@@ -39,16 +41,6 @@ public class AddWish {
         this.categoryType = categoryType;
     }
     
-//wish list to user
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_uid")
-    @JsonBackReference
-    private User user;
-    public User getUser() {
-        return user;
-    }
-    public void setUser(User user) {
-        this.user = user;
-    }
-    
+
+     
 }

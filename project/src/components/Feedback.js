@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../assets/css/Feedback.css';
+import { useNavigate } from 'react-router-dom';
 
-const FeedbackForm = () => {
+const Feedback = () => {
   const [formData, setFormData] = useState({
     rating: '',
     description: '',
   });
-  
+
+  const [error, setError] = useState({
+    rating: '',
+    description: '',
+    general: '',
+  });
+
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,38 +30,43 @@ const FeedbackForm = () => {
       ...formData,
       [name]: value,
     });
+    setError({ ...error, [name]: "", general: "" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Feedback submitted:', formData);
-    // Here you can add the logic to send the feedback to the backend or API
-    let alertMessage = '';
-    switch (formData.rating) {
-      case '1':
-        alertMessage = 'We are sorry to hear that you had a poor experience.';
-        break;
-      case '2':
-        alertMessage = 'Thank you for your feedback. We will strive to improve.';
-        break;
-      case '3':
-        alertMessage = 'Thank you! We appreciate your feedback.';
-        break;
-      case '4':
-        alertMessage = 'Thank you for your feedback! We are glad you had a good experience.';
-        break;
-      case '5':
-        alertMessage = 'Thank you for your excellent rating! We are thrilled to hear you had a great experience.';
-        break;
-      default:
-        alertMessage = 'Thank you for your feedback!';
+    const formErrors = {};
+
+    if (!formData.rating) {
+      formErrors.rating = "Please provide a rating.";
     }
-    window.alert(alertMessage);
-    setFormData({
-      rating: '',
-      description: '',
-    });
-    navigate('/');
+    if (!formData.description) {
+      formErrors.description = "Please provide a description.";
+    }
+
+    if (Object.keys(formErrors).length > 0) {
+      setError(formErrors);
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8080/api/feedback",
+        formData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Use backticks for template literal
+          },
+        }
+      );
+      console.log('Feedback submitted:', response.data);
+      alert('Feedback submitted successfully!');
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      setError({ ...error, general: "An unexpected error occurred. Please try again later." });
+    }
   };
 
   return (
@@ -61,16 +80,18 @@ const FeedbackForm = () => {
             name="rating"
             value={formData.rating}
             onChange={handleChange}
-            required
+            className={error.rating ? 'input-error' : ''}
           >
-            <option value="">Select a rating</option>
+            <option value="">Select Rating</option>
             <option value="1">1 - Poor</option>
             <option value="2">2 - Fair</option>
             <option value="3">3 - Good</option>
             <option value="4">4 - Very Good</option>
             <option value="5">5 - Excellent</option>
           </select>
+          {error.rating && <p className="error-message">{error.rating}</p>}
         </div>
+
         <div className="form-group">
           <label htmlFor="description">Description:</label>
           <textarea
@@ -78,13 +99,17 @@ const FeedbackForm = () => {
             name="description"
             value={formData.description}
             onChange={handleChange}
-            required
-          ></textarea>
+            className={error.description ? 'input-error' : ''}
+            placeholder="Write your feedback here..."
+          />
+          {error.description && <p className="error-message">{error.description}</p>}
         </div>
+
+        {error.general && <p className="error-message">{error.general}</p>}
         <button type="submit" className="submit-button">Submit</button>
       </form>
     </div>
   );
 };
 
-export default FeedbackForm;
+export default Feedback;

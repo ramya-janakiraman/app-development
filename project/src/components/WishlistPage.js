@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Card, CardContent, CardMedia, Grid, Typography, IconButton, Rating } from "@mui/material";
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Delete } from '@mui/icons-material';
-import '../assets/css/WishlistPage.css';  // Ensure this file exists and is properly imported
+import { useAuth } from '../context/AuthContext';
+import axios from 'axios'; // Import axios
+import '../assets/css/WishlistPage.css';
 
 const WishlistPage = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
+  const { isLoggedIn, setRedirectPath } = useAuth();
 
   useEffect(() => {
     // Retrieve wishlist items from local storage
@@ -18,6 +21,18 @@ const WishlistPage = () => {
     const updatedWishlistItems = wishlistItems.filter((_, i) => i !== index);
     setWishlistItems(updatedWishlistItems);
     localStorage.setItem('wishlist', JSON.stringify(updatedWishlistItems));
+  };
+
+  const handleBuyNow = (item) => {
+    if (isLoggedIn) {
+      navigate('/address', { state: { item } });
+    } else {
+      alert('Please login to buy the product.');
+      setRedirectPath('/address');
+      localStorage.setItem('redirectPath', '/address');
+      localStorage.setItem('buyNowItem', JSON.stringify(item));
+      navigate('/login');
+    }
   };
 
   return (
@@ -107,9 +122,9 @@ const WishlistPage = () => {
                         : '50% OFF'}
                     </Button>
                     <CardMedia
-                      sx={{ height: 200, marginTop: '10px' }}
-                      image={item.image || 'https://via.placeholder.com/200'} // Fallback image if item.image is missing
-                      title={item.title}
+                      sx={{ height: 300 }}
+                      image={item.imageUrl || 'https://via.placeholder.com/200'} // Use item.imageUrl
+                      title={item.productName} // Use item.productName
                     />
                     <IconButton
                       sx={{
@@ -128,13 +143,13 @@ const WishlistPage = () => {
                     </IconButton>
                     <CardContent className="wishlist-content-custom">
                       <Typography gutterBottom variant="h6" sx={{ fontSize: '17px' }}>
-                        {item.title}
+                        {item.productName} {/* Use item.productName */}
                       </Typography>
                       <Typography variant="body2" className="price" style={{ fontWeight: 'bold' }}>
-                        {item.price}
+                        Rs.{item.productPrice}.00 {/* Use item.productPrice */}
                       </Typography>
                       <Typography variant="body2" className="old-price" style={{ color: 'red', fontWeight: 'bold', textDecoration: 'line-through' }}>
-                        {item.oldPrice}
+                        {item.oldPrice ? `Rs.${item.oldPrice}` : ''}
                       </Typography>
                       <Button
                         variant="contained"
@@ -149,13 +164,13 @@ const WishlistPage = () => {
                             color: 'white',
                           },
                         }}
-                        onClick={() => navigate('/address')}
+                        onClick={() => handleBuyNow(item)}
                       >
                         Buy Now
                       </Button>
                       <Rating
                         name={`product-rating-${index}`}
-                        value={item.rating || 4} // Default to 0 if item.rating is missing
+                        value={item.rating || 4} // Default to 4 if item.rating is missing
                         precision={0.5}
                         readOnly
                       />
@@ -164,35 +179,6 @@ const WishlistPage = () => {
                 </Grid>
               ))}
             </Grid>
-            <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
-              <Link to='/'>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    backgroundColor: 'white',
-                    color: 'black',
-                    padding: '10px',
-                    letterSpacing: '3px',
-                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
-                    border: '2px solid',
-                    borderColor: 'black',
-                    fontWeight: 'bold',
-                    marginBottom:'20px',
-                    '&:hover': {
-                      backgroundColor: 'black',
-                      color: 'white',
-                    },
-                    '&:active': {
-                      backgroundColor: 'gray',
-                      color: 'white',
-                    },
-                  }}
-                >
-                  Continue Shopping
-                </Button>
-              </Link>
-            </Box>
           </>
         )}
       </Box>
